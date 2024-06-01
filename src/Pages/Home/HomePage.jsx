@@ -15,7 +15,7 @@ const HomePage = () => {
   return (
     <div className="max-w-7xl mx-auto">
      <Helmet>
-      <title>Akeneo | Home </title>
+      <title>Guirdian | Home </title>
     </Helmet>
      <Slider></Slider>
      <Banner></Banner>

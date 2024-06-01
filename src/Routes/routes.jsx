@@ -87,8 +87,6 @@ export const routes = createBrowserRouter([
          fetch(`${import.meta.env.VITE_API_URL}/queryDetails/${params.id}`)
       },
 
-     
-
       {
         path: "/login",
         element: <Login/>,
