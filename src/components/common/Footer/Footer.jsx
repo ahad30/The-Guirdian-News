@@ -7,11 +7,12 @@ const Footer = () => {
         <div>
           <div className="text-teal-600 flex items-center lg:justify-start justify-center">
 
-          <img src={logo} className="w-[130px] h-[27px]" />
+          <img src={logo} className="w-[60px] h-[50px]" />
+          <p className="text-lg font-bold">The Guirdian News</p>
           </div>
           <div >
           <p className="mt-4 max-w-2xl  lg:max-w-xs text-gray-500">
-          The suite of products that helps you and your supply chain to create and share engaging omnichannel product experiences.
+          The suite of every news that helps you and your supply chain to create and share engaging omnichannel on different criteria and experiences.
           </p>
             </div> 
        
@@ -177,7 +178,7 @@ const Footer = () => {
         </div>
       </div>
   
-      <p className="text-xs text-gray-500 text-center">&copy; 2024. Product Navigator. All rights reserved.</p>
+      <p className="text-xs text-gray-500 text-center">&copy; 2024. The Guirdian News. All rights reserved.</p>
     </div>
   </footer>
   );

@@ -131,7 +131,11 @@ const Header = () => {
             >
               <NavLink to="/" className={``}>
 
-                <img src={logo} className="w-[130px] h-[27px] rounded-full" />
+              <div className="text-teal-600 flex items-center">
+
+<img src={logo} className="w-[60px] h-[50px]" />
+<p className="text-lg font-bold">The Guirdian News</p>
+</div>
 
               </NavLink>
             </Typography>

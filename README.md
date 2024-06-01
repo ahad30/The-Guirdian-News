@@ -1,6 +1,5 @@
-Website Name : Akeneo Product Query
-
-live link : https://assignment-11-ahad.netlify.app/
+Website Name : The Guirdian News
+live link : https://assignment-12-ahad.netlify.app/
                   
 Packages:
 
