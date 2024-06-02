@@ -15,6 +15,8 @@ import AllQueries from "../Pages/AllQueries/AllQueries";
 import AllQyeryDetails from "../Pages/AllQueries/AllQyeryDetails/AllQyeryDetails";
 import MyRecommendation from "../Pages/MyRecommendation/MyRecommendation";
 import RecommendationRequest from "../Pages/RecommendationRequest/RecommendationRequest";
+import AdminRoute from "./AdminRoute";
+import AdminHome from "../Pages/Dashboard/AdminHome/AdminHome/AdminHome";
 
 export const routes = createBrowserRouter([
   {
@@ -108,9 +110,21 @@ export const routes = createBrowserRouter([
     element: <DashboardLayout />,
     children: [
       {
-        path: "/dashboard/admin",
-        element: <div>Admin</div>,
+        path: 'adminHome',
+        element: <AdminRoute><AdminHome></AdminHome></AdminRoute>
       },
+      {
+        path: 'allArticle',
+        element: <AdminRoute><AddItems></AddItems></AdminRoute>
+      },
+      {
+        path: 'addPublisher',
+        element: <AdminRoute><ManageItems></ManageItems></AdminRoute>
+      },
+      {
+        path: 'allUser',
+        element: <AdminRoute><AllUsers></AllUsers></AdminRoute>
+      }
     ],
   },
 ]);
