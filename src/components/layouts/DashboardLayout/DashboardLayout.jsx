@@ -23,6 +23,7 @@ const DashboardLayout = () => {
   return (
 
     <>
+    <div className="flex">
     <div>
     <Card className="h-screen w-full max-w-[20rem] p-4 shadow-xl rounded-none shadow-blue-gray-900/5 bg-cyan-700">
       <div className="mb-2 p-4">
@@ -31,39 +32,43 @@ const DashboardLayout = () => {
         </Typography>
       </div>
       <List className="text-white">
+      <NavLink to="/dashboard/adminHome">   
         <ListItem>
           <ListItemPrefix>
             <PresentationChartBarIcon className="h-5 w-5" />
           </ListItemPrefix>
-          <NavLink to="/dashboard/adminHome">                                
-           Admin Home
-           </NavLink>
+                                    
+       Dashboard Statistics
         </ListItem>
+           </NavLink>
+
+          <NavLink to="/dashboard/allArticle">                                
         <ListItem>
           <ListItemPrefix>
             <ShoppingBagIcon className="h-5 w-5" />
           </ListItemPrefix>
-          <NavLink to="/dashboard/allArticle">                                
           All Article
-           </NavLink>
         </ListItem>
+          </NavLink>
+
+          <NavLink to="/dashboard/addPublisher">                                
         <ListItem>
           <ListItemPrefix>
             <InboxIcon className="h-5 w-5" />
           </ListItemPrefix>
-          <NavLink to="/dashboard/addPublisher">                                
            Add Publisher
-           </NavLink>
         
         </ListItem>
+           </NavLink>
+
+        <NavLink to="/dashboard/allUser">                                
         <ListItem>
           <ListItemPrefix>
             <UserCircleIcon className="h-5 w-5" />
           </ListItemPrefix>
-          <NavLink to="/dashboard/allUser">                                
          All User
-           </NavLink>
         </ListItem>
+           </NavLink>
        
       </List>
     </Card>
@@ -71,6 +76,7 @@ const DashboardLayout = () => {
 
     <div>
       <Outlet />
+    </div>
     </div>
     </>
   );

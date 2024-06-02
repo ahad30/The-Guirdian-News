@@ -8,7 +8,6 @@ import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
 import PrivateRoute from "./PrivateRoute";
 import UpdateItem from "../Pages/UpdateItem/UpdateItem";
-import ArtCraftCategoryDetails from "../Pages/Home/ArtCraftCategoryDetails/ArtCraftCategoryDetails";
 import AddQuery from "../Pages/AddQuery/AddQuery";
 import MyQueryList from "../Pages/MyQueryList/MyQueryList";
 import AllQueries from "../Pages/AllQueries/AllQueries";
@@ -16,7 +15,12 @@ import AllQyeryDetails from "../Pages/AllQueries/AllQyeryDetails/AllQyeryDetails
 import MyRecommendation from "../Pages/MyRecommendation/MyRecommendation";
 import RecommendationRequest from "../Pages/RecommendationRequest/RecommendationRequest";
 import AdminRoute from "./AdminRoute";
-import AdminHome from "../Pages/Dashboard/AdminHome/AdminHome/AdminHome";
+import AdminHome from "../Pages/Dashboard/AdminHome/AdminHome";
+import AllArticle from "../Pages/Dashboard/AllArticle/AllArticle";
+import AddPublisher from "../Pages/Dashboard/AddPublisher/AddPublisher";
+import AllUser from "../Pages/Dashboard/AllUser/AllUser";
+
+
 
 export const routes = createBrowserRouter([
   {
@@ -111,19 +115,19 @@ export const routes = createBrowserRouter([
     children: [
       {
         path: 'adminHome',
-        element: <AdminRoute><AdminHome></AdminHome></AdminRoute>
+        element: <AdminHome></AdminHome>
       },
       {
         path: 'allArticle',
-        element: <AdminRoute><AddItems></AddItems></AdminRoute>
+        element: <AllArticle></AllArticle>
       },
       {
         path: 'addPublisher',
-        element: <AdminRoute><ManageItems></ManageItems></AdminRoute>
+        element: <AddPublisher></AddPublisher>
       },
       {
         path: 'allUser',
-        element: <AdminRoute><AllUsers></AllUsers></AdminRoute>
+        element: <AllUser></AllUser>
       }
     ],
   },

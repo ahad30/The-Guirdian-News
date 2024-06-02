@@ -144,7 +144,7 @@ const Header = () => {
               viewTransitionName: isTransitioning ? "slide" : "",
             };
           }}
-          to="/allQueries" className="flex items-center text-[#150B2BB3]">
+          to="/dashboard/adminHome" className="flex items-center text-[#150B2BB3]">
       Dashboard
         </NavLink>
       </Typography>
