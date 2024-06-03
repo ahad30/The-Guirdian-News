@@ -18,7 +18,6 @@ import AdminRoute from "./AdminRoute";
 import AdminHome from "../Pages/Dashboard/AdminHome/AdminHome";
 import AllArticle from "../Pages/Dashboard/AllArticle/AllArticle";
 import AddPublisher from "../Pages/Dashboard/AddPublisher/AddPublisher";
-import AllUser from "../Pages/Dashboard/AllUser/AllUser";
 import AllUsers from "../Pages/Dashboard/AllUser/AllUsers";
 
 
@@ -116,7 +115,7 @@ export const routes = createBrowserRouter([
     children: [
       {
         path: 'adminHome',
-        element: <AdminHome></AdminHome>
+        element: <AdminRoute><AdminHome></AdminHome></AdminRoute>
       },
       {
         path: 'allArticle',

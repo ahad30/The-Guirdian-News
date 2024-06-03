@@ -21,7 +21,7 @@ import useAdmin from "../../../hooks/useAdmin";
 
 
 const DashboardLayout = () => {
-  const isAdmin = useAdmin();
+  const [isAdmin] = useAdmin();
   return (
 
     <>

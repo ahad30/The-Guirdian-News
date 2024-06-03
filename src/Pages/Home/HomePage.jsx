@@ -19,7 +19,7 @@ const HomePage = () => {
     </Helmet>
      <Slider></Slider>
      <Banner></Banner>
-     <RecentQueries loadedItems = {loadedItems}></RecentQueries>
+     {/* <RecentQueries loadedItems = {loadedItems}></RecentQueries> */}
      <Blog></Blog>
      <Contact></Contact>
     </div>

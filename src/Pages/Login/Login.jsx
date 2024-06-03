@@ -1,11 +1,8 @@
 import { useContext } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FaGoogle } from "react-icons/fa";
-import { FaGithub } from "react-icons/fa";
 import { AuthContext } from '../../Providers/AuthProvider';
 import toast from 'react-hot-toast';
-import axios from 'axios';
 import SocialLogin from '../../components/SocialLogin/SocialLogin';
 const Login = () => {
   const { signIn, signInWithGoogle, signInWithGithub } = useContext(AuthContext);
@@ -23,14 +20,7 @@ const Login = () => {
     try {
       signIn(email, password)
         .then( result => {
-          console.log(result.user);
-
-          //2. get token from server using email
-           axios.post(`${import.meta.env.VITE_API_URL}/jwt`,
-            {email: result?.user?.email},{ withCredentials: true })
-            .then(res => {
-            console.log(res?.data)
-          })    
+          console.log(result.user); 
           toast.success('log in successfully')
           navigate(location?.state ? location.state : '/');
 
@@ -47,54 +37,18 @@ const Login = () => {
   }
 
 
-  const handleGoogleSignIn = async() => {
-   try{
-    signInWithGoogle()
-    .then(async result => {
-      console.log(result.user)
-      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/jwt`,
-      {
-        email: result?.user?.email,
-      },
-      { withCredentials: true }
-    )
-     console.log(data)
-      toast.success('log in successfully')
-      navigate(location?.state ? location.state : '/');
-    })
-    .catch(error => {
-      console.error(error)
-    })
-   }
-    catch (err) {
-      console.log(err)
-      toast.error(err?.message)
-    }
-  }
-
-  const handleGithubSignIn = () => {
-    signInWithGithub()
-      .then(result => {
-        console.log(result.user)
-        toast.success('log in successfully')
-        navigate(location?.state ? location.state : '/');
-      })
-      .catch(error => {
-        console.error(error)
-      })
-  }
 
   return (
 
     <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
       <Helmet>
-        <title>Akeneo | Login</title>
+        <title>Guirdian | Login</title>
       </Helmet>
       <div className="mx-auto max-w-lg text-center">
         <h1 className="text-2xl font-bold sm:text-3xl">Log in here!</h1>
 
         <p className="mt-4 text-gray-500">
-          Dive into world of paints & craft
+          Dive into world of news
         </p>
       </div>
 

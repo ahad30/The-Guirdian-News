@@ -5,7 +5,8 @@ import {
   MobileNav,
   Typography,
   IconButton,
-  Button
+  Button,
+  Collapse
 } from "@material-tailwind/react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../Providers/AuthProvider";
@@ -13,12 +14,14 @@ import { AuthContext } from "../../../Providers/AuthProvider";
 import toast from 'react-hot-toast';
 import { Tooltip } from "react-tooltip";
 import useAuth from "../../../hooks/useAuth";
+import useAdmin from "../../../hooks/useAdmin";
 
 
 const Header = () => {
   const [openNav, setOpenNav] = React.useState(false);
   const { user, logOut } = useAuth()
   const navigate = useNavigate();
+  const [isAdmin] = useAdmin();
   const [theme, setTheme] = useState('light')
 
   useEffect(() => {
@@ -131,9 +134,12 @@ const Header = () => {
           Premium Article
         </NavLink>
       </Typography>
-      <Typography
+
+{
+  user && isAdmin && <>
+  <Typography
         as="li"
-        variant="large"
+        variant="h5"
         color="blue-gray"
         className={`p-1 text-sm`}
       >
@@ -149,13 +155,15 @@ const Header = () => {
       Dashboard
         </NavLink>
       </Typography>
+  </>
+}
 
 
 
 
       <Typography
         as="li"
-        variant="large"
+        variant="h1"
         color="blue-gray"
         className={`p-1 text-sm lg:hidden`}
       >
@@ -367,7 +375,7 @@ const Header = () => {
             </div>
           </div>
         </div>
-        <MobileNav open={openNav} className={`flex justify-center`}>{navList}</MobileNav>
+        <Collapse open={openNav} className={`flex justify-center`}>{navList}</Collapse>
       </Navbar>
     </div>
   );
