@@ -12,11 +12,12 @@ import { AuthContext } from "../../../Providers/AuthProvider";
 
 import toast from 'react-hot-toast';
 import { Tooltip } from "react-tooltip";
+import useAuth from "../../../hooks/useAuth";
 
 
 const Header = () => {
   const [openNav, setOpenNav] = React.useState(false);
-  const { user, logOut } = useContext(AuthContext);
+  const { user, logOut } = useAuth()
   const navigate = useNavigate();
   const [theme, setTheme] = useState('light')
 
@@ -38,7 +39,7 @@ const Header = () => {
 
 
   const handleSignOut = () => {
-    logOut()
+      logOut()
       .then(() => {
         toast.success('log out successfully')
         navigate('/login')

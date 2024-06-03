@@ -4,7 +4,7 @@ import moment from 'moment';
 
 
 const SingleQuery = ({recentQueriesItem}) => {
-console.log(recentQueriesItem)
+// console.log(recentQueriesItem)
 const { image,brandName, itemName, queryTitle ,shortDescription, posterInfo,deadline } = recentQueriesItem
   return (
 

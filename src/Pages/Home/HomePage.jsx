@@ -10,7 +10,7 @@ import RecentQueries from "./RecentQueries/RecentQueries";
 const HomePage = () => {
 
   const loadedItems = useLoaderData();
-  console.log(loadedItems);
+  // console.log(loadedItems);
   
   return (
     <div className="max-w-7xl mx-auto">

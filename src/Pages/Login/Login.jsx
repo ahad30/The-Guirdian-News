@@ -6,6 +6,7 @@ import { FaGithub } from "react-icons/fa";
 import { AuthContext } from '../../Providers/AuthProvider';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import SocialLogin from '../../components/SocialLogin/SocialLogin';
 const Login = () => {
   const { signIn, signInWithGoogle, signInWithGithub } = useContext(AuthContext);
   const location = useLocation();
@@ -148,7 +149,7 @@ const Login = () => {
 
       </form>
       <div className='flex gap-3 justify-center'>
-        <button onClick={handleGoogleSignIn}><FaGoogle size={25}></FaGoogle></button>
+       <SocialLogin></SocialLogin>
         {/* <button><FaGithub onClick={handleGithubSignIn} size={25}></FaGithub></button> */}
       </div>
     </div>
