@@ -16,16 +16,21 @@ import {
   Cog6ToothIcon,
   InboxIcon,
 } from "@heroicons/react/24/solid";
+import useAdmin from "../../../hooks/useAdmin";
 
 
 
 const DashboardLayout = () => {
+  const isAdmin = useAdmin();
   return (
 
     <>
     <div className="flex">
     <div>
-    <Card className="h-screen w-full max-w-[20rem] p-4 shadow-xl rounded-none shadow-blue-gray-900/5 bg-cyan-700">
+   { 
+  isAdmin && 
+  <>
+  <Card className="h-screen w-full max-w-[20rem] p-4 shadow-xl rounded-none shadow-blue-gray-900/5 bg-cyan-700">
       <div className="mb-2 p-4">
         <Typography variant="h5" color="blue-gray">
         Admin
@@ -70,11 +75,13 @@ const DashboardLayout = () => {
         </ListItem>
            </NavLink>
        
-      </List>
+    </List>
     </Card>
+  </> 
+}
     </div>
 
-    <div>
+    <div className="w-[90%] mx-auto">
       <Outlet />
     </div>
     </div>

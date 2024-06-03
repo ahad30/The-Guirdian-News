@@ -1,4 +1,6 @@
 Website Name : The Guirdian News
+Admin email : user2@gmail.com
+Password : 123456Aa
 live link : https://assignment-12-ahad.netlify.app/
                   
 Packages:

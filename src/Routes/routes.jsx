@@ -19,6 +19,7 @@ import AdminHome from "../Pages/Dashboard/AdminHome/AdminHome";
 import AllArticle from "../Pages/Dashboard/AllArticle/AllArticle";
 import AddPublisher from "../Pages/Dashboard/AddPublisher/AddPublisher";
 import AllUser from "../Pages/Dashboard/AllUser/AllUser";
+import AllUsers from "../Pages/Dashboard/AllUser/AllUsers";
 
 
 
@@ -127,7 +128,7 @@ export const routes = createBrowserRouter([
       },
       {
         path: 'allUser',
-        element: <AllUser></AllUser>
+        element: <AdminRoute><AllUsers></AllUsers></AdminRoute>
       }
     ],
   },
