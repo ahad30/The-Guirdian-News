@@ -6,8 +6,14 @@ import { Helmet } from "react-helmet-async";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../Providers/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const AddArticle = () => {
+  const { register, handleSubmit, reset } = useForm();
+  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
   const { user } = useContext(AuthContext);
   const [startDate, setStartDate] = useState(new Date(Date.now()))
   const navigate = useNavigate()
@@ -67,6 +73,43 @@ const AddArticle = () => {
         }
       });
   };
+
+
+  const onSubmit = async (data) => {
+    console.log(data)
+    // image upload to imgbb and then get an url v
+    const imageFile = { image: data.image[0] }
+    const res = await axiosPublic.post(image_hosting_api, imageFile, {
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+    });
+    if (res.data.success) {
+        // now send the menu item data to the server with the image url
+        const articleItem = {
+            name: data.name,
+            category: data.category,
+            price: parseFloat(data.price),
+            recipe: data.recipe,
+            image: res.data.data.display_url
+        }
+        // 
+        const menuRes = await axiosSecure.post('/addArticle', articleItem);
+        console.log(menuRes.data)
+        if(menuRes.data.insertedId){
+            // show success popup
+            reset();
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: `${data.name} is added to the menu.`,
+                showConfirmButton: false,
+                timer: 1500
+              });
+        }
+    }
+    console.log( 'with image url', res.data);
+};
 
   return (
     <section className="">
