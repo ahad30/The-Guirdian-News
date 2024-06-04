@@ -135,33 +135,10 @@ const Header = () => {
         </NavLink>
       </Typography>
 
-{
-  user && isAdmin && <>
+
+
+
   <Typography
-        as="li"
-        variant="h5"
-        color="blue-gray"
-        className={`p-1 text-sm`}
-      >
-        <NavLink
-          style={({ isActive, isTransitioning }) => {
-            return {
-              fontWeight: isActive ? "bold" : "",
-              color: isActive ? "red" : "black",
-              viewTransitionName: isTransitioning ? "slide" : "",
-            };
-          }}
-          to="/dashboard/adminHome" className="flex items-center text-[#150B2BB3]">
-      Dashboard
-        </NavLink>
-      </Typography>
-  </>
-}
-
-
-
-
-      <Typography
         as="li"
         variant="h1"
         color="blue-gray"
@@ -178,7 +155,7 @@ const Header = () => {
           to="/register" className="flex items-center text-[#150B2BB3] ">
           Register
         </NavLink>
-      </Typography>
+  </Typography>
 
     </ul>
   );
@@ -221,17 +198,19 @@ const Header = () => {
                 <svg className="col-start-2 row-start-1 stroke-base-100 fill-base-100" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
               </label>
             </div> */}
+            {
+  user && isAdmin && <>
+  <div className="gap-4">
+                    <Link to="/dashboard/adminHome">  <Button className={`bg-[#23BE0A] py-2 px-3`}>Dashborad</Button></Link>
+                  </div>
+  </>
+}
 
             {
               user ?
                 <>
-                  {/* <div className="flex items-center space-x-2">
-
-                    <img data-tooltip-id="my-tooltip" data-tooltip-content={user.displayName} src={user.photoURL} alt="" className="w-[60px] h-[60px] object-cover rounded-full" />
-                    <Tooltip id="my-tooltip" />
-
-                    <Button onClick={handleSignOut} className={`bg-[#59C6D2]`}>Log out</Button>
-                  </div> */}
+             
+               
                   <div className='dropdown dropdown-end z-50'>
                     <div
                       tabIndex={0}

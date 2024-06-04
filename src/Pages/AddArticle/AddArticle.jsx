@@ -10,6 +10,10 @@ import { useForm } from "react-hook-form";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
+const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
+
+
 const AddArticle = () => {
   const { register, handleSubmit, reset } = useForm();
   const axiosPublic = useAxiosPublic();
@@ -19,65 +23,11 @@ const AddArticle = () => {
   const navigate = useNavigate()
   // console.log(startDate)
 
-  const handleAddItem = event => {
-    event.preventDefault();
-
-    const form = event.target;
-    const image = form.image.value;
-    const itemName = form.itemName.value;
-    const brandName = form.brandName.value;
-    const queryTitle = form.queryTitle.value;
-    const shortDescription = form.shortDescription.value;
-    const deadline = startDate;
-    const userEmail = user.email;
-    const userName = user.displayName;
-    const photo = user?.photoURL;
-    
-    const newQueryItem = {
-      image,
-      itemName,
-      brandName,
-      queryTitle,
-      shortDescription,
-      deadline,
-      posterInfo: {
-        userEmail,
-        userName,
-        photo
-      },
-      recommendation_count: 0,
-    };
-    //  console.log(newQueryItem);
-
-    // send data to the server
-    fetch(`${import.meta.env.VITE_API_URL}/addSingleQuery`, {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify(newQueryItem)
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        if (data.insertedId.length > 0) {
-          Swal.fire({
-            title: 'Success!',
-            text: 'Query  Added Successfully',
-            icon: 'success',
-            confirmButtonText: 'Ok'
-          });
-          form.reset();
-          navigate('/myQueryList')
-
-        }
-      });
-  };
 
 
   const onSubmit = async (data) => {
-    console.log(data)
-    // image upload to imgbb and then get an url v
+    // console.log(data)
+
     const imageFile = { image: data.image[0] }
     const res = await axiosPublic.post(image_hosting_api, imageFile, {
         headers: {
@@ -87,22 +37,28 @@ const AddArticle = () => {
     if (res.data.success) {
         // now send the menu item data to the server with the image url
         const articleItem = {
-            name: data.name,
-            category: data.category,
-            price: parseFloat(data.price),
-            recipe: data.recipe,
-            image: res.data.data.display_url
-        }
+           title: data.title,
+           tags: data.tags,
+           publisher: data.publisher,
+           description: data.description,
+           image: res.data.data.display_url,
+           status : 'Pending',
+           isPremium : null,
+           deadline : startDate,
+           userEmail : user.email,
+           userName : user.displayName,
+           photo : user?.photoURL,
+          }
         // 
-        const menuRes = await axiosSecure.post('/addArticle', articleItem);
-        console.log(menuRes.data)
-        if(menuRes.data.insertedId){
+        const articleRes = await axiosSecure.post('/addArticle', articleItem);
+        console.log(articleRes.data)
+        if(articleRes.data.insertedId){
             // show success popup
             reset();
             Swal.fire({
                 position: "top-end",
                 icon: "success",
-                title: `${data.name} is added to the menu.`,
+                title: `${data.title} is added to the your article.`,
                 showConfirmButton: false,
                 timer: 1500
               });
@@ -114,42 +70,58 @@ const AddArticle = () => {
   return (
     <section className="">
       <Helmet>
-        <title>Akeneo | Add Item</title>
+        <title>Guirdian | Add Article</title>
       </Helmet>
-      <h2 className="text-2xl font-extrabold text-center mb-5">Add Query</h2>
+      <h2 className="text-2xl font-extrabold text-center mb-5">Add Article</h2>
       <div className="bg-[#F4F3F0] p-10 rounded-lg shadow-lg mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
 
-        <form onSubmit={handleAddItem} className="">
+        <form onSubmit={handleSubmit(onSubmit)} className="">
           <div className="grid grid-cols-1 gap-x-5 lg:grid-cols-2">
-            {/* Form fields */}
+         
             {/* Image URL */}
             <div className="form-control mb-8">
               <label className="label">
-                <span className="font-bold mb-3">Image URL</span>
+                <span className="font-bold mb-3">Image</span>
               </label>
-              <input type="text" required name="image" placeholder="Image URL" className="input rounded-lg border-gray-200 p-3 text-sm w-full" />
+              <input {...register("image")} type="file" name="image"  className="input rounded-lg border-gray-200 p-3 text-sm w-full" />
             </div>
 
-            {/* Item Name */}
+            {/* Title */}
             <div className="form-control mb-8">
               <label className="label">
-                <span className="font-bold mb-3">Product Name</span>
+                <span className="font-bold mb-3">Title</span>
               </label>
-              <input type="text" required name="itemName" placeholder="Item Name" className="input rounded-lg border-gray-200 p-3 text-sm w-full" />
+              <input type="text" {...register("title")} placeholder="Article Title" className="input rounded-lg border-gray-200 p-3 text-sm w-full" />
             </div>
-            {/* Brand Name */}
+            
+            {/* Tags */}
             <div className="form-control mb-8">
               <label className="label">
-                <span className="font-bold mb-3">Brand Name</span>
+                <span className="font-bold mb-3">Tag</span>
               </label>
-              <input type="text" required name="brandName" placeholder="Brand Name" className="input rounded-lg border-gray-200 p-3 text-sm w-full" />
+              <select defaultValue="default" {...register("tags")}
+                                className="select select-bordered w-full">
+                                <option disabled value="default">Select a Tag</option>
+                                <option value="sports">Sports</option>
+                                <option value="nation">Nation</option>
+                                <option value="jobs">Jobs</option>
+                               
+                            </select>
             </div>
-            {/*Query Title */}
+
+            {/*Publisher */}
             <div className="form-control mb-8">
               <label className="label">
-                <span className="font-bold mb-3">Query Title</span>
+                <span className="font-bold mb-3">Publisher</span>
               </label>
-              <input type="text" required name="queryTitle" placeholder="title" className="input rounded-lg border-gray-200 p-3 text-sm w-full" />
+              <select defaultValue="default" {...register('publisher', { required: true })}
+                                className="select select-bordered w-full">
+                                <option disabled value="default">Select a Publisher</option>
+                                <option value="sports">Sports</option>
+                                <option value="nation">Nation</option>
+                                <option value="jobs">Jobs</option>
+                               
+                            </select>
             </div>
 
 
@@ -168,15 +140,15 @@ const AddArticle = () => {
             {/* Short Description */}
             <div className="form-control mb-8">
               <label className="label">
-                <span className="font-bold mb-3">Boycott Reason</span>
+                <span className="font-bold mb-3">Description</span>
               </label>
-              <textarea name="shortDescription" required placeholder="Short Description" className="textarea  rounded-lg border-gray-200 p-3 text-sm w-full"></textarea>
+              <textarea  {...register("description")}  placeholder="Short Description" className="textarea  rounded-lg border-gray-200 p-3 text-sm w-full"></textarea>
             </div>
 
           </div>
           {/* Submit Button */}
           <div className="flex justify-end">
-            <Button type="submit" value="Add Craft Item" className="" >Add Query</Button>
+           <Button type="submit">Add Article</Button>
           </div>
         </form>
 
