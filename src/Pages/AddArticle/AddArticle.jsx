@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import { AuthContext } from "../../Providers/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
-const AddQuery = () => {
+const AddArticle = () => {
   const { user } = useContext(AuthContext);
   const [startDate, setStartDate] = useState(new Date(Date.now()))
   const navigate = useNavigate()
@@ -142,4 +142,4 @@ const AddQuery = () => {
   );
 };
 
-export default AddQuery;
+export default AddArticle;

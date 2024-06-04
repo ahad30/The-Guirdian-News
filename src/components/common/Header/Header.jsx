@@ -266,7 +266,7 @@ const Header = () => {
                                 viewTransitionName: isTransitioning ? "slide" : "",
                               };
                             }}
-                            to="/recommendationRequest" className="flex items-center text-[#150B2BB3] justify-start">
+                            to="/addArticle" className="flex items-center text-[#150B2BB3] justify-start">
                            Add Article
                           </NavLink>
                         </Typography>
@@ -288,7 +288,7 @@ const Header = () => {
                               viewTransitionName: isTransitioning ? "slide" : "",
                             };
                           }}
-                          to="/myQueryList" className="flex items-center text-[#150B2BB3]">
+                          to="/myArticle" className="flex items-center text-[#150B2BB3]">
                           My Article
                         </NavLink>
                       </Typography>
@@ -307,7 +307,7 @@ const Header = () => {
                               viewTransitionName: isTransitioning ? "slide" : "",
                             };
                           }}
-                          to="/myRecommendation" className="flex items-center text-[#150B2BB3]">
+                          to="/myProfile" className="flex items-center text-[#150B2BB3]">
                          Profile
                         </NavLink>
                       </Typography>

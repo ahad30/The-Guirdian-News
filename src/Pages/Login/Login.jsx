@@ -20,9 +20,12 @@ const Login = () => {
     try {
       signIn(email, password)
         .then( result => {
-          console.log(result.user); 
+          // console.log(result.user); 
           toast.success('log in successfully')
-          navigate(location?.state ? location.state : '/');
+          if(result.user){
+
+            navigate('/');
+          }
 
         })
         .catch(error => {
@@ -60,6 +63,7 @@ const Login = () => {
             <input
               type="email"
               name='email'
+              defaultValue={"user2@gmail.com"}
               required
               className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
               placeholder="Enter email"
@@ -74,6 +78,7 @@ const Login = () => {
             <input
               type="password"
               name='password'
+              defaultValue={"123456Aa"}
               required
               className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
               placeholder="Enter password"

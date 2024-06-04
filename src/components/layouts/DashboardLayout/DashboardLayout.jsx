@@ -1,4 +1,4 @@
-import React from "react";
+
 import { NavLink, Outlet } from "react-router-dom";
 import {
   Card,
@@ -6,14 +6,11 @@ import {
   List,
   ListItem,
   ListItemPrefix,
-  ListItemSuffix,
-  Chip,
 } from "@material-tailwind/react";
 import {
   PresentationChartBarIcon,
   ShoppingBagIcon,
   UserCircleIcon,
-  Cog6ToothIcon,
   InboxIcon,
 } from "@heroicons/react/24/solid";
 import useAdmin from "../../../hooks/useAdmin";

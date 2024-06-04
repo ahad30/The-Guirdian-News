@@ -8,7 +8,7 @@ import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
 import PrivateRoute from "./PrivateRoute";
 import UpdateItem from "../Pages/UpdateItem/UpdateItem";
-import AddQuery from "../Pages/AddQuery/AddQuery";
+import AddQuery from "../Pages/AddArticle/AddArticle";
 import MyQueryList from "../Pages/MyQueryList/MyQueryList";
 import AllQueries from "../Pages/AllQueries/AllQueries";
 import AllQyeryDetails from "../Pages/AllQueries/AllQyeryDetails/AllQyeryDetails";
@@ -19,6 +19,7 @@ import AdminHome from "../Pages/Dashboard/AdminHome/AdminHome";
 import AllArticle from "../Pages/Dashboard/AllArticle/AllArticle";
 import AddPublisher from "../Pages/Dashboard/AddPublisher/AddPublisher";
 import AllUsers from "../Pages/Dashboard/AllUser/AllUsers";
+import AddArticle from "../Pages/AddArticle/AddArticle";
 
 
 
@@ -68,15 +69,15 @@ export const routes = createBrowserRouter([
 
 
       {
-        path: "/addQuery",
+        path: "/addArticle",
         element: 
        <PrivateRoute>
-         <AddQuery/>
+         <AddArticle></AddArticle>
        </PrivateRoute>
       },
       
       {
-        path: "/myQueryList",
+        path: "/myArticle",
         element: 
        <PrivateRoute>
          <MyQueryList/>

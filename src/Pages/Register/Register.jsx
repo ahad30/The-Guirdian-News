@@ -1,11 +1,10 @@
-import React, { useContext, useState } from 'react';
+import  { useContext, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaEye } from 'react-icons/fa';
 import { FiEyeOff } from "react-icons/fi";
 import { AuthContext } from '../../Providers/AuthProvider';
-import toast, { Toaster } from 'react-hot-toast';
-import { updateProfile } from 'firebase/auth';
+import toast from 'react-hot-toast';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 const Register = () => {
@@ -58,7 +57,6 @@ const Register = () => {
                             .then(res => {
                                 if (res.data.insertedId) {
                                     console.log('user added to the database')
-
                                 }
                             })
                     })
