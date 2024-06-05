@@ -10,9 +10,16 @@ import { useForm } from "react-hook-form";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import usePublisher from "../../hooks/usePublisher";
+import Select from 'react-select';
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
+
+const options = [
+  { value: 'sport', label: 'Sport' },
+  { value: 'nation', label: 'Nation' },
+  { value: 'job', label: 'Job' }
+]
 
 
 const AddArticle = () => {
@@ -28,46 +35,46 @@ const AddArticle = () => {
 
 
   const onSubmit = async (data) => {
-    // console.log(data)
-
+    console.log(data)
+ 
     const imageFile = { image: data.image[0] }
     const res = await axiosPublic.post(image_hosting_api, imageFile, {
-        headers: {
-            'content-type': 'multipart/form-data'
-        }
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
     });
     if (res?.data?.success) {
-        // now send the menu item data to the server with the image url
-        const articleItem = {
-           title: data?.title,
-           tags: data?.tags,
-           publisher: data?.publisher,
-           description: data?.description,
-           image: res.data?.data?.display_url,
-           status : 'Pending',
-           isPremium : null,
-           deadline : startDate,
-           userEmail : user?.email,
-           userName : user?.displayName,
-           photo : user?.photoURL,
-          }
-        // 
-        const articleRes = await axiosSecure.post('/addArticle', articleItem);
-        console.log(articleRes.data)
-        if(articleRes.data.insertedId){
-            // show success popup
-            reset();
-            Swal.fire({
-                position: "top-center",
-                icon: "success",
-                title: `${data.title} is added to the your article.`,
-                showConfirmButton: false,
-                timer: 1500
-              });
-        }
+
+      const articleItem = {
+        title: data?.title,
+        tags: data?.tags,
+        // publisher: data?.publisher.value,
+        description: data?.description,
+        image: res.data?.data?.display_url,
+        status: 'Pending',
+        isPremium: null,
+        deadline: startDate,
+        userEmail: user?.email,
+        userName: user?.displayName,
+        photo: user?.photoURL,
+      }
+      // 
+      const articleRes = await axiosSecure.post('/addArticle', articleItem);
+      console.log(articleRes.data)
+      if (articleRes.data.insertedId) {
+        // show success popup
+        reset();
+        Swal.fire({
+          position: "top-center",
+          icon: "success",
+          title: `${data.title} is added to the your article.`,
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
     }
-    console.log( 'with image url', res.data);
-};
+    console.log('with image url', res.data);
+  };
 
   return (
     <section className="">
@@ -79,13 +86,13 @@ const AddArticle = () => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="">
           <div className="grid grid-cols-1 gap-x-5 lg:grid-cols-2">
-         
+
             {/* Image URL */}
             <div className="form-control mb-8">
               <label className="label">
                 <span className="font-bold mb-3">Image</span>
               </label>
-              <input {...register("image")} type="file"  className="input rounded-lg border-gray-200 p-3 text-sm w-full" />
+              <input {...register("image")} type="file" required className="input rounded-lg border-gray-200 p-3 text-sm w-full" />
             </div>
 
             {/* Title */}
@@ -95,39 +102,33 @@ const AddArticle = () => {
               </label>
               <input type="text" {...register("title")} placeholder="Article Title" className="input rounded-lg border-gray-200 p-3 text-sm w-full" />
             </div>
-            
+
             {/* Tags */}
             <div className="form-control mb-8">
               <label className="label">
                 <span className="font-bold mb-3">Tag</span>
               </label>
-              <select defaultValue="default" {...register("tags")}
-                                className="select select-bordered w-full">
-                                <option disabled value="default">Select a Tag</option>
-                                <option value="sports">Sports</option>
-                                <option value="nation">Nation</option>
-                                <option value="jobs">Jobs</option>
-                               
-                            </select>
+               <Select  name={"tags"} 
+               {...register("tags")} options={options} className="" 
+                placeholder="Select Tag"/>
             </div>
 
             {/*Publisher */}
-            <div className="form-control mb-8">
+            {/* <div className="form-control mb-8">
               <label className="label">
                 <span className="font-bold mb-3">Publisher</span>
               </label>
-              <select defaultValue="default" {...register('publisher', { required: true })}
-                                className="select select-bordered w-full text-black">
-                                <option disabled value="default">Select a Publisher</option>
-                                {publisher.map((item) => (
-        <option key={item?._id} value={item?.publisherName}>
-          {item?.publisherName}
-        </option>
-      ))}
-
-                               
-                            </select>
-            </div>
+              <Select
+      {...register('publisher', { required: true })}
+      defaultValue={null}
+      options={publisher.map((item) => ({
+        value: item?._id,
+        label: item?.publisherName
+      }))}
+      className=""
+      placeholder="Select a Publisher"
+    />
+            </div> */}
 
 
             {/* Processing Time */}
@@ -147,13 +148,13 @@ const AddArticle = () => {
               <label className="label">
                 <span className="font-bold mb-3">Description</span>
               </label>
-              <textarea  {...register("description")}  placeholder="Short Description" className="textarea  rounded-lg border-gray-200 p-3 text-sm w-full"></textarea>
+              <textarea  {...register("description")} placeholder="Short Description" className="textarea  rounded-lg border-gray-200 p-3 text-sm w-full"></textarea>
             </div>
 
           </div>
           {/* Submit Button */}
           <div className="flex justify-end">
-           <Button type="submit">Add Article</Button>
+            <Button type="submit">Add Article</Button>
           </div>
         </form>
 
