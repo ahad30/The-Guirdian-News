@@ -3,13 +3,10 @@ import DashboardLayout from "../components/layouts/DashboardLayout/DashboardLayo
 import MainLayout from "../components/layouts/MainLayout/MainLayout";
 import HomePage from "../Pages/Home/HomePage";
 import ErrorPage from "../components/common/ErrorPage/ErrorPage";
-import Contact from "../Pages/Contact/Contact";
 import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
 import PrivateRoute from "./PrivateRoute";
 import UpdateItem from "../Pages/UpdateItem/UpdateItem";
-import AddQuery from "../Pages/AddArticle/AddArticle";
-import MyQueryList from "../Pages/MyQueryList/MyQueryList";
 import AllQueries from "../Pages/AllQueries/AllQueries";
 import AllQyeryDetails from "../Pages/AllQueries/AllQyeryDetails/AllQyeryDetails";
 import MyRecommendation from "../Pages/MyRecommendation/MyRecommendation";
@@ -20,6 +17,8 @@ import AllArticle from "../Pages/Dashboard/AllArticle/AllArticle";
 import AddPublisher from "../Pages/Dashboard/AddPublisher/AddPublisher";
 import AllUsers from "../Pages/Dashboard/AllUser/AllUsers";
 import AddArticle from "../Pages/AddArticle/AddArticle";
+import MyArticleList from "../Pages/MyArticleList/MyArticleList";
+import UpdateProfile from "../Pages/Update-Profile/UpdateProfile";
 
 
 
@@ -35,6 +34,12 @@ export const routes = createBrowserRouter([
         loader: () =>
          fetch(`${import.meta.env.VITE_API_URL}/getSingleQuery`)
       },
+
+      {
+        path: "/myProfile",
+        element:  <UpdateProfile/>,
+      },
+
 
       {
         path: "/allQueries",
@@ -80,7 +85,7 @@ export const routes = createBrowserRouter([
         path: "/myArticle",
         element: 
        <PrivateRoute>
-         <MyQueryList/>
+         <MyArticleList/>
        </PrivateRoute>
       },
 
@@ -104,10 +109,6 @@ export const routes = createBrowserRouter([
         element: <Register/>,
       },
 
-      {
-        path: "/contact",
-        element: <Contact />,
-      }
     ],
   },
   {

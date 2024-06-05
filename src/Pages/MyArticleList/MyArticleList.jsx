@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import moment from 'moment';
 import axios from 'axios';
 
-const MyQueryList = () => {
+const MyArticleList = () => {
   const { user } = useContext(AuthContext);
   const [items, setItems] = useState([]);
 
@@ -139,4 +139,4 @@ const MyQueryList = () => {
   );
 };
 
-export default MyQueryList;
+export default MyArticleList;

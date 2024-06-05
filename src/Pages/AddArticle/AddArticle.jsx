@@ -1,4 +1,4 @@
-import { Button } from "@material-tailwind/react";
+import { Button, Spinner } from "@material-tailwind/react";
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { useContext, useState } from "react";
@@ -23,7 +23,8 @@ const options = [
 
 
 const AddArticle = () => {
-  const { register, handleSubmit, reset } = useForm();
+  const [loading , setLoading] = useState(false)
+  const { register, handleSubmit, reset, setValue } = useForm();
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
   const { user } = useContext(AuthContext);
@@ -31,12 +32,22 @@ const AddArticle = () => {
   const [startDate, setStartDate] = useState(new Date(Date.now()))
 
   // console.log(startDate)
+  const handleSelectChange = (selectedOption) => {
+    setValue('tags', selectedOption);
+    register('tags');
+  
+  };
 
+  const handleSelectChange2 = (selectedOption2) => {
+    setValue('publisher', selectedOption2);
+    register('publisher');
+
+  };
 
 
   const onSubmit = async (data) => {
+    setLoading(true)
     console.log(data)
- 
     const imageFile = { image: data.image[0] }
     const res = await axiosPublic.post(image_hosting_api, imageFile, {
       headers: {
@@ -48,7 +59,7 @@ const AddArticle = () => {
       const articleItem = {
         title: data?.title,
         tags: data?.tags,
-        // publisher: data?.publisher.value,
+        publisher: data?.publisher,
         description: data?.description,
         image: res.data?.data?.display_url,
         status: 'Pending',
@@ -63,7 +74,7 @@ const AddArticle = () => {
       console.log(articleRes.data)
       if (articleRes.data.insertedId) {
         // show success popup
-        reset();
+        reset()   
         Swal.fire({
           position: "top-center",
           icon: "success",
@@ -71,12 +82,18 @@ const AddArticle = () => {
           showConfirmButton: false,
           timer: 1500
         });
+        setLoading(false)
       }
     }
     console.log('with image url', res.data);
   };
 
   return (
+
+    <>
+    { loading ? (<div className="flex justify-center items-center flex-col h-full p-24">
+            <Spinner className="h-16 w-16 text-gray-900/50" />
+              </div>) : (
     <section className="">
       <Helmet>
         <title>Guirdian | Add Article</title>
@@ -100,7 +117,7 @@ const AddArticle = () => {
               <label className="label">
                 <span className="font-bold mb-3">Title</span>
               </label>
-              <input type="text" {...register("title")} placeholder="Article Title" className="input rounded-lg border-gray-200 p-3 text-sm w-full" />
+              <input type="text" required {...register("title")} placeholder="Article Title" className="input rounded-lg border-gray-200 p-3 text-sm w-full" />
             </div>
 
             {/* Tags */}
@@ -108,27 +125,32 @@ const AddArticle = () => {
               <label className="label">
                 <span className="font-bold mb-3">Tag</span>
               </label>
-               <Select  name={"tags"} 
-               {...register("tags")} options={options} className="" 
-                placeholder="Select Tag"/>
+              <Select onChange={handleSelectChange}
+                defaultValue={null} 
+                required
+                options={options.map((item) => ({
+                  value: item?.value,
+                  label: item?.label
+                }))} className=""
+                placeholder="Select Tag" />
             </div>
 
             {/*Publisher */}
-            {/* <div className="form-control mb-8">
+            <div className="form-control mb-8">
               <label className="label">
                 <span className="font-bold mb-3">Publisher</span>
               </label>
-              <Select
-      {...register('publisher', { required: true })}
-      defaultValue={null}
-      options={publisher.map((item) => ({
-        value: item?._id,
-        label: item?.publisherName
-      }))}
-      className=""
-      placeholder="Select a Publisher"
-    />
-            </div> */}
+              <Select required
+                onChange={handleSelectChange2}
+                defaultValue={null}
+                options={publisher.map((item) => ({
+                  value: item?._id,
+                  label: item?.publisherName
+                }))}
+                className=""
+                placeholder="Select a Publisher"
+              />
+            </div>
 
 
             {/* Processing Time */}
@@ -148,7 +170,7 @@ const AddArticle = () => {
               <label className="label">
                 <span className="font-bold mb-3">Description</span>
               </label>
-              <textarea  {...register("description")} placeholder="Short Description" className="textarea  rounded-lg border-gray-200 p-3 text-sm w-full"></textarea>
+              <textarea required {...register("description")} placeholder="Short Description" className="textarea  rounded-lg border-gray-200 p-3 text-sm w-full"></textarea>
             </div>
 
           </div>
@@ -160,6 +182,9 @@ const AddArticle = () => {
 
       </div>
     </section>
+    )
+    }
+    </>
   );
 };
 
