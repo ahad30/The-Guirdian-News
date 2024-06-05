@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import usePublisher from "../../hooks/usePublisher";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -19,8 +20,9 @@ const AddArticle = () => {
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
   const { user } = useContext(AuthContext);
+  const [publisher] = usePublisher();
   const [startDate, setStartDate] = useState(new Date(Date.now()))
-  const navigate = useNavigate()
+
   // console.log(startDate)
 
 
@@ -115,11 +117,14 @@ const AddArticle = () => {
                 <span className="font-bold mb-3">Publisher</span>
               </label>
               <select defaultValue="default" {...register('publisher', { required: true })}
-                                className="select select-bordered w-full">
+                                className="select select-bordered w-full text-black">
                                 <option disabled value="default">Select a Publisher</option>
-                                <option value="sports">Sports</option>
-                                <option value="nation">Nation</option>
-                                <option value="jobs">Jobs</option>
+                                {publisher.map((item) => (
+        <option key={item?._id} value={item?.publisherName}>
+          {item?.publisherName}
+        </option>
+      ))}
+
                                
                             </select>
             </div>

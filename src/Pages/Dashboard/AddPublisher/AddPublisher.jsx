@@ -51,7 +51,7 @@ console.log( 'with image url', res.data);
   return (
     <section className="">
    
-    <h2 className="text-2xl font-extrabold text-center mb-5">Add Publisher</h2>
+    <h2 className="text-2xl font-bold text-center mt-7">Add Publisher</h2>
     <div className=" p-10 rounded-lg shadow-lg mx-auto max-w-[700px] px-4 py-16 sm:px-6 lg:px-8">
 
       <form onSubmit={handleSubmit(onSubmit)} className="">
