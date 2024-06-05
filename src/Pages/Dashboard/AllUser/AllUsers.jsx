@@ -4,7 +4,7 @@ import { FaTrashAlt, FaUsers } from "react-icons/fa";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { Button } from "antd";
-
+import CountUp from 'react-countup';
 
 const AllUsers = () => {
     const axiosSecure = useAxiosSecure();
@@ -64,7 +64,7 @@ const AllUsers = () => {
         <div>
             <div className="flex justify-evenly my-4">
                 <h2 className="text-xl">All Users</h2>
-                <h2 className="text-xl">Total Users: {users.length}</h2>
+                <h2 className="text-xl">Total Users: <CountUp end={users.length} /></h2>
             </div>
             <div className="overflow-x-auto mx-auto">
                 <table className="table">

@@ -6,7 +6,7 @@ import ErrorPage from "../components/common/ErrorPage/ErrorPage";
 import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
 import PrivateRoute from "./PrivateRoute";
-import UpdateItem from "../Pages/UpdateItem/UpdateItem";
+import UpdateItem from "../Pages/MyArticleList/UpdateItem";
 import AllQueries from "../Pages/AllQueries/AllQueries";
 import AllQyeryDetails from "../Pages/AllQueries/AllQyeryDetails/AllQyeryDetails";
 import MyRecommendation from "../Pages/MyRecommendation/MyRecommendation";
@@ -16,7 +16,7 @@ import AdminHome from "../Pages/Dashboard/AdminHome/AdminHome";
 import AllArticle from "../Pages/Dashboard/AllArticle/AllArticle";
 import AddPublisher from "../Pages/Dashboard/AddPublisher/AddPublisher";
 import AllUsers from "../Pages/Dashboard/AllUser/AllUsers";
-import AddArticle from "../Pages/AddArticle/AddArticle";
+import AddArticle from "../Pages/MyArticleList/AddArticle";
 import MyArticleList from "../Pages/MyArticleList/MyArticleList";
 import UpdateProfile from "../Pages/Update-Profile/UpdateProfile";
 
@@ -31,8 +31,8 @@ export const routes = createBrowserRouter([
       {
         path: "/",
         element: <HomePage/>,
-        loader: () =>
-         fetch(`${import.meta.env.VITE_API_URL}/getSingleQuery`)
+        // loader: () =>
+        //  fetch(`${import.meta.env.VITE_API_URL}/getSingleQuery`)
       },
 
       {

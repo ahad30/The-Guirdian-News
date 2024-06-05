@@ -9,7 +9,7 @@ import RecentQueries from "./RecentQueries/RecentQueries";
 
 const HomePage = () => {
 
-  const loadedItems = useLoaderData();
+  // const loadedItems = useLoaderData();
   // console.log(loadedItems);
   
   return (

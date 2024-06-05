@@ -48,7 +48,7 @@ const [loading, setLoading] = useState(false);
     return (
         <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
         <Helmet>
-            <title>Luxury | Update Profile</title>
+            <title>Guirdian | Update Profile</title>
         </Helmet>
         <div className="mx-auto max-w-lg text-center">
             <h1 className="text-2xl font-bold sm:text-3xl mb-5">Profile Update!</h1>
