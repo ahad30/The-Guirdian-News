@@ -14,7 +14,7 @@ import {
   InboxIcon,
 } from "@heroicons/react/24/solid";
 import useAdmin from "../../../hooks/useAdmin";
-
+import { GoHome } from "react-icons/go";
 
 
 const DashboardLayout = () => {
@@ -69,6 +69,14 @@ const DashboardLayout = () => {
             <UserCircleIcon className="h-5 w-5" />
           </ListItemPrefix>
          All User
+        </ListItem>
+           </NavLink>
+        <NavLink to="/">                                
+        <ListItem>
+          <ListItemPrefix>
+            <GoHome className="h-5 w-5" />
+          </ListItemPrefix>
+          Home
         </ListItem>
            </NavLink>
        

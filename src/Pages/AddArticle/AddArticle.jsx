@@ -34,19 +34,19 @@ const AddArticle = () => {
             'content-type': 'multipart/form-data'
         }
     });
-    if (res.data.success) {
+    if (res?.data?.success) {
         // now send the menu item data to the server with the image url
         const articleItem = {
-           title: data.title,
-           tags: data.tags,
-           publisher: data.publisher,
-           description: data.description,
-           image: res.data.data.display_url,
+           title: data?.title,
+           tags: data?.tags,
+           publisher: data?.publisher,
+           description: data?.description,
+           image: res.data?.data?.display_url,
            status : 'Pending',
            isPremium : null,
            deadline : startDate,
-           userEmail : user.email,
-           userName : user.displayName,
+           userEmail : user?.email,
+           userName : user?.displayName,
            photo : user?.photoURL,
           }
         // 
@@ -56,7 +56,7 @@ const AddArticle = () => {
             // show success popup
             reset();
             Swal.fire({
-                position: "top-end",
+                position: "top-center",
                 icon: "success",
                 title: `${data.title} is added to the your article.`,
                 showConfirmButton: false,
@@ -83,7 +83,7 @@ const AddArticle = () => {
               <label className="label">
                 <span className="font-bold mb-3">Image</span>
               </label>
-              <input {...register("image")} type="file" name="image"  className="input rounded-lg border-gray-200 p-3 text-sm w-full" />
+              <input {...register("image")} type="file"  className="input rounded-lg border-gray-200 p-3 text-sm w-full" />
             </div>
 
             {/* Title */}
