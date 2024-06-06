@@ -121,7 +121,7 @@ export const routes = createBrowserRouter([
       },
       {
         path: 'allArticle',
-        element: <AllArticle></AllArticle>
+        element: <AdminRoute><AllArticle></AllArticle></AdminRoute>
       },
       {
         path: 'addPublisher',

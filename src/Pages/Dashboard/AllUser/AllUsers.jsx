@@ -2,35 +2,30 @@ import { useQuery } from "@tanstack/react-query";
 
 import { FaTrashAlt, FaUsers } from "react-icons/fa";
 import Swal from "sweetalert2";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { Button } from "antd";
 import CountUp from 'react-countup';
+import useUser from "../../../hooks/useUser";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const AllUsers = () => {
     const axiosSecure = useAxiosSecure();
-    const { data: users = [], refetch } = useQuery({
-        queryKey: ['users'],
-        queryFn: async () => {
-            const res = await axiosSecure.get('/users');
-            return res.data;
-        }
-    })
+    const [users, refetch] = useUser();
 
-    const handleMakeAdmin = user =>{
+    const handleMakeAdmin = user => {
         axiosSecure.patch(`/users/admin/${user._id}`)
-        .then(res =>{
-            console.log(res.data)
-            if(res.data.modifiedCount > 0){
-                refetch();
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: `${user.name} is an Admin Now!`,
-                    showConfirmButton: false,
-                    timer: 1500
-                  });
-            }
-        })
+            .then(res => {
+                console.log(res.data)
+                if (res.data.modifiedCount > 0) {
+                    refetch();
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: `${user.name} is an Admin Now!`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            })
     }
 
     const handleDeleteUser = user => {
@@ -85,7 +80,7 @@ const AllUsers = () => {
                                 <td>{user.name}</td>
                                 <td>{user.email}</td>
                                 <td>
-                                    { user.role === 'admin' ? 'Admin' : <Button
+                                    {user.role === 'admin' ? 'Admin' : <Button
                                         onClick={() => handleMakeAdmin(user)}
                                         className="">
                                         <FaUsers className="text-black

@@ -63,7 +63,7 @@ const Login = () => {
             <input
               type="email"
               name='email'
-              defaultValue={"user2@gmail.com"}
+              defaultValue={"user1@gmail.com"}
               required
               className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
               placeholder="Enter email"
