@@ -96,7 +96,7 @@ export const routes = createBrowserRouter([
          <UpdateItem/>
        </PrivateRoute>,
         loader: ({ params }) =>
-         fetch(`${import.meta.env.VITE_API_URL}/queryDetails/${params.id}`)
+         fetch(`${import.meta.env.VITE_API_URL}/articleDetails/${params.id}`)
       },
 
       {

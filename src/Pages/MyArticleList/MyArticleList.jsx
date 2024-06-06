@@ -25,7 +25,7 @@ const MyArticleList = () => {
     },
   })
 
-  console.log(articles)
+  // console.log(articles)
   if (isLoading) {
     return <div className="flex justify-center items-center flex-col h-full p-24">
     <Spinner className="h-16 w-16 text-gray-900/50" />
@@ -97,11 +97,19 @@ const MyArticleList = () => {
                  
                 <thead className='bg-gray-50'>
                   <tr>
+                    <th scope='col'
+                      className='py-3.5 px-4 text-sm font-normal  text-gray-500'>
+                      Serial
+                    </th>
+                    <th scope='col'
+                      className='py-3.5 px-4 text-sm font-normal  text-gray-500'>
+                       Article Photo
+                    </th>
                     <th
                       scope='col'
-                      className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500'
+                      className='py-3.5 px-4 text-sm font-normal  text-gray-500'
                     >
-                      <div className='flex items-center gap-x-3'>
+                      <div className=''>
                         <span>Title</span>
                       </div>
                     </th>
@@ -140,9 +148,15 @@ const MyArticleList = () => {
 
                 <tbody className='bg-white divide-y divide-gray-300 '>
               
-                  {articles.map(item => (
+                  {articles.map((item,index) => (
                     <tr key={item?._id}>
-                      <td className='px-4 py-4 text-sm text-gray-500  whitespace-nowrap'>
+                      <td className='text-center'>
+                         {index+1}
+                      </td>
+                      <td className='flex justify-center'>
+                         <img src={item?.image} alt="" className='h-[60px] w-[60px] rounded-full'/>
+                      </td>
+                      <td className='px-4 py-4 text-sm text-gray-500 text-center'>
                         {item?.title}
                       </td>
                       <td className='px-4 py-4 text-sm text-gray-500  whitespace-nowrap'>

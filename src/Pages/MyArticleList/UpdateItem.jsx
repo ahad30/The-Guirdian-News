@@ -1,152 +1,187 @@
-import { Button } from '@material-tailwind/react';
-import { Helmet } from 'react-helmet-async';
-import { useLoaderData, useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2';
+import { Button, Spinner } from "@material-tailwind/react";
 import DatePicker from 'react-datepicker'
-import { useContext, useState } from 'react';
-import { AuthContext } from '../../Providers/AuthProvider';
+import 'react-datepicker/dist/react-datepicker.css'
+import { useContext, useState } from "react";
+import { Helmet } from "react-helmet-async";
+import Swal from "sweetalert2";
+import { useForm } from "react-hook-form";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import Select from 'react-select';
+import { useLoaderData, useNavigate } from "react-router-dom";
+
+const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
+
+const options = [
+  { value: 'sport', label: 'Sport' },
+  { value: 'nation', label: 'Nation' },
+  { value: 'job', label: 'Job' }
+]
+
 
 const UpdateItem = () => {
-  const {user} = useContext(AuthContext)
-  const loadedItems = useLoaderData();
-  const navigate = useNavigate()
-   const { _id , image,itemName,brandName,queryTitle, shortDescription,deadline} = loadedItems;
-    const [startDate, setStartDate] = useState(new Date(deadline));
-    
-   console.log(loadedItems)
+  const loaderData = useLoaderData();
+  const {title , publisher , tags , description , _id } = loaderData;
+  const [loading , setLoading] = useState(false)
+  const { register, handleSubmit, reset, setValue } = useForm();
+  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
+  const [startDate, setStartDate] = useState(new Date(Date.now()))
+  const navigate = useNavigate();
+  // console.log(loaderData)
 
 
+  const handleSelectChange = (selectedOption) => {
+    setValue('tags', selectedOption);
+    register('tags');
+  
+  };
 
-const handleUpdateItem = event => {
-    event.preventDefault();
+  const handleSelectChange2 = (selectedOption2) => {
+    setValue('publisher', selectedOption2);
+    register('publisher');
 
-    const form = event.target;
-    const image = form.image.value;
-    const itemName = form.itemName.value;
-    const brandName = form.brandName.value;
-    const queryTitle = form.queryTitle.value;
-    const shortDescription = form.shortDescription.value;
-    const deadline = startDate;
-    const userEmail = user.email;
-    const userName = user.displayName;
-    const photo = user?.photoURL;
-    const updateQueryItem = {
-      image,
-      itemName,
-      brandName,
-      queryTitle,
-      shortDescription,
-      deadline,
-      posterInfo: {
-        userEmail,
-        userName,
-        photo
-      },
-      recommendation_count: 0,
-    };
-  //  console.log(newCraftItem);
-
-
-
-    fetch(`${import.meta.env.VITE_API_URL}/updateQueryItem/${_id}`, {
-      method: 'PUT',
-      headers: {
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify(updateQueryItem)
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        if (data.modifiedCount > 0) {
-          Swal.fire({
-            title: 'Success!',
-            text: 'Query Item Updated Successfully',
-            icon: 'success',
-            confirmButtonText: 'Ok'
-          })
-          navigate('/myQueryList')
-        }
-
-      });
   };
 
 
+  const onSubmit = async (data) => {
+    console.log(data)
+    setLoading(true)
+    const imageFile = { image: data.image[0] }
+    const res = await axiosPublic.post(image_hosting_api, imageFile, {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    });
+    if (res?.data?.success) {
 
-
+      const articleItem = {
+        title: data?.title,
+        tags: data?.tags,
+        publisher: data?.publisher,
+        description: data?.description,
+        image: res.data?.data?.display_url,
+        deadline: startDate,  
+      }
+      // 
+      const articleRes = await axiosSecure.put(`/updateArticle/${_id}`, articleItem);
+      console.log(articleRes.data)
+      if (articleRes.data.modifiedCount > 0) {
+        setLoading(false)
+        // show success popup 
+        Swal.fire({
+          position: "top-center",
+          icon: "success",
+          title: `Your Article is Updated.`,
+          showConfirmButton: false,
+          timer: 1500
+        });
+        navigate("/myArticle")
+      }
+    }
+    console.log('with image url', res.data);
+  };
 
   return (
+
+    <>
+    { loading ? (<div className="flex justify-center items-center flex-col h-full p-24">
+            <Spinner className="h-16 w-16 text-gray-900/50" />
+              </div>) : (
     <section className="">
-    <Helmet>
-      <title>Akeneo| Update Item</title>
-    </Helmet>
-    <h2 className="text-2xl font-extrabold text-center mb-5">Update Query Item</h2>
-    <div className="bg-[#F4F3F0] p-10 rounded-lg shadow-lg mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+      <Helmet>
+        <title>Guirdian | Update Article</title>
+      </Helmet>
+      <h2 className="text-2xl font-extrabold text-center mb-5">Update Article</h2>
+      <div className="bg-[#F4F3F0] p-10 rounded-lg shadow-lg mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
 
-<form onSubmit={handleUpdateItem} className="">
-  <div className="grid grid-cols-1 gap-x-5 lg:grid-cols-2">
-    {/* Form fields */}
-    {/* Image URL */}
-    <div className="form-control mb-8">
-      <label className="label">
-        <span className="font-bold mb-3">Image URL</span>
-      </label>
-      <input type="text" required name="image" defaultValue={image} placeholder="Image URL" className="input rounded-lg border-gray-200 p-3 text-sm w-full" />
-    </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="">
+          <div className="grid grid-cols-1 gap-x-5 lg:grid-cols-2">
 
-    {/* Item Name */}
-    <div className="form-control mb-8">
-      <label className="label">
-        <span className="font-bold mb-3">Product Name</span>
-      </label>
-      <input type="text" required name="itemName" defaultValue={itemName} placeholder="Item Name" className="input rounded-lg border-gray-200 p-3 text-sm w-full" />
-    </div>
-    {/* Brand Name */}
-    <div className="form-control mb-8">
-      <label className="label">
-        <span className="font-bold mb-3">Brand Name</span>
-      </label>
-      <input type="text" defaultValue={brandName} required name="brandName" placeholder="Brand Name" className="input rounded-lg border-gray-200 p-3 text-sm w-full" />
-    </div>
-    {/*Query Title */}
-    <div className="form-control mb-8">
-      <label className="label">
-        <span className="font-bold mb-3">Query Title</span>
-      </label>
-      <input type="text" required name="queryTitle" defaultValue={queryTitle} placeholder="title" className="input rounded-lg border-gray-200 p-3 text-sm w-full" />
-    </div>
+            {/* Image URL */}
+            <div className="form-control mb-8">
+              <label className="label">
+                <span className="font-bold mb-3">Image</span>
+              </label>
+              <input required {...register("image")} type="file"  className="input rounded-lg border-gray-200 p-3 text-sm w-full" />
+            </div>
+
+            {/* Title */}
+            <div className="form-control mb-8">
+              <label className="label">
+                <span className="font-bold mb-3">Title</span>
+              </label>
+              <input defaultValue={title} type="text" required {...register("title")} placeholder="Article Title" className="input rounded-lg border-gray-200 p-3 text-sm w-full" />
+            </div>
+
+            {/* Tags */}
+            <div className="form-control mb-8">
+              <label className="label">
+                <span className="font-bold mb-3">Tag</span>
+              </label>
+              <Select onChange={handleSelectChange}
+                defaultValue={tags} 
+                required
+                options={options.map((item) => ({
+                  value: item?.value,
+                  label: item?.label
+                }))} className=""
+                placeholder="Select Tag" />
+            </div>
+
+            {/*Publisher */}
+            <div className="form-control mb-8">
+              <label className="label">
+                <span className="font-bold mb-3">Publisher</span>
+              </label>
+              <Select required
+                onChange={handleSelectChange2}
+                defaultValue={publisher}
+                // options={publisher.map((item) => ({
+                //   value: item?._id,
+                //   label: item?.publisherName
+                // }))}
+                className=""
+                placeholder="Select a Publisher"
+              />
+            </div>
 
 
-    {/* Date Time */}
-    <div className='form-control mb-8'>
-      <label className='label font-bold mb-3'>Date</label>
-      <DatePicker
-        
-        className='border p-2 rounded-md  w-full'
-        selected={startDate}
-        
-        onChange={date => setStartDate(date)}
-      />
-    </div>
+            {/* Processing Time */}
+            <div className='form-control mb-8'>
+              <label className='label font-bold mb-3'>Date</label>
 
-    {/* Short Description */}
-    <div className="form-control mb-8">
-      <label className="label">
-        <span className="font-bold mb-3">Boycott Reason</span>
-      </label>
-      <textarea name="shortDescription" required defaultValue={shortDescription} placeholder="Short Description" className="textarea  rounded-lg border-gray-200 p-3 text-sm w-full"></textarea>
-    </div>
+              {/* Date Picker Input Field */}
+              <DatePicker
+                className='border p-2 rounded-md w-full'
+                selected={startDate}
+                onChange={date => setStartDate(date)}
+              />
+            </div>
 
-  </div>
-  {/* Submit Button */}
-  <div className="flex justify-end">
-    <Button type="submit" value="Add Craft Item" className="" >Update Query</Button>
-  </div>
-</form>
+            {/* Short Description */}
+            <div className="form-control mb-8">
+              <label className="label">
+                <span className="font-bold mb-3">Description</span>
+              </label>
+              <textarea defaultValue={description} 
+              required {...register("description")} placeholder="Short Description" className="textarea  rounded-lg border-gray-200 p-3 text-sm w-full"></textarea>
+            </div>
 
-</div>
-  </section>
-  )
-}
+          </div>
+          {/* Submit Button */}
+          <div className="flex justify-end">
+            <Button type="submit">Add Article</Button>
+          </div>
+        </form>
 
-export default UpdateItem
+      </div>
+    </section>
+    )
+    }
+    </>
+  );
+};
+
+export default UpdateItem;

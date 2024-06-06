@@ -20,23 +20,23 @@ const Header = () => {
   const { user, logOut } = useAuth()
   const navigate = useNavigate();
   const [isAdmin] = useAdmin();
-  // const [theme, setTheme] = useState('light')
+  const [theme, setTheme] = useState('light')
 
-  // useEffect(() => {
-  //   localStorage.setItem('theme', theme)
-  //   const localTheme = localStorage.getItem('theme')
-  //   document.querySelector('html').setAttribute('data-theme', localTheme)
-  // }, [theme])
+  useEffect(() => {
+    localStorage.setItem('theme', theme)
+    const localTheme = localStorage.getItem('theme')
+    document.querySelector('html').setAttribute('data-theme', localTheme)
+  }, [theme])
 
-  // const handleToggle = e => {
-  //   // console.log(e.target.value)
-  //   if (e.target.checked) {
-  //     setTheme('dark')
-  //   }
-  //   else {
-  //     setTheme('light')
-  //   }
-  // }
+  const handleToggle = e => {
+    // console.log(e.target.value)
+    if (e.target.checked) {
+      setTheme('dark')
+    }
+    else {
+      setTheme('light')
+    }
+  }
 
 
   const handleSignOut = () => {
