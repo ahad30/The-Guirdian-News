@@ -189,8 +189,8 @@ const MyArticleList = () => {
                             item?.status === 'Pending' &&
                             'bg-yellow-100/60 text-yellow-500'
                           }  ${
-                            item?.status === 'Approve' &&
-                            'bg-emerald-100/60 text-emerald-500'
+                            item?.status === 'Approved' &&
+                            'bg-green-100/60 text-green-500'
                           } ${
                             item?.status === 'Rejected' &&
                             'bg-red-100/60 text-red-500'
