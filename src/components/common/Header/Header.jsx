@@ -2,14 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import logo from "../../../../public/logo.png"
 import {
   Navbar,
-  MobileNav,
   Typography,
   IconButton,
   Button,
   Collapse
 } from "@material-tailwind/react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../../Providers/AuthProvider";
 
 import toast from 'react-hot-toast';
 import { Tooltip } from "react-tooltip";
@@ -22,23 +20,23 @@ const Header = () => {
   const { user, logOut } = useAuth()
   const navigate = useNavigate();
   const [isAdmin] = useAdmin();
-  const [theme, setTheme] = useState('light')
+  // const [theme, setTheme] = useState('light')
 
-  useEffect(() => {
-    localStorage.setItem('theme', theme)
-    const localTheme = localStorage.getItem('theme')
-    document.querySelector('html').setAttribute('data-theme', localTheme)
-  }, [theme])
+  // useEffect(() => {
+  //   localStorage.setItem('theme', theme)
+  //   const localTheme = localStorage.getItem('theme')
+  //   document.querySelector('html').setAttribute('data-theme', localTheme)
+  // }, [theme])
 
-  const handleToggle = e => {
-    // console.log(e.target.value)
-    if (e.target.checked) {
-      setTheme('dark')
-    }
-    else {
-      setTheme('light')
-    }
-  }
+  // const handleToggle = e => {
+  //   // console.log(e.target.value)
+  //   if (e.target.checked) {
+  //     setTheme('dark')
+  //   }
+  //   else {
+  //     setTheme('light')
+  //   }
+  // }
 
 
   const handleSignOut = () => {
@@ -200,7 +198,7 @@ const Header = () => {
             </div> */}
             {
   user && isAdmin && <>
-  <div className="gap-4">
+                  <div className="gap-4">
                     <Link to="/dashboard/adminHome">  <Button className={`bg-[#23BE0A] py-2 px-3`}>Dashborad</Button></Link>
                   </div>
   </>

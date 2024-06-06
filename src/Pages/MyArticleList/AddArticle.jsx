@@ -5,7 +5,6 @@ import { useContext, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../Providers/AuthProvider";
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
@@ -63,7 +62,7 @@ const AddArticle = () => {
         description: data?.description,
         image: res.data?.data?.display_url,
         status: 'Pending',
-        isPremium: null,
+        isPremium: 'No',
         deadline: startDate,
         userEmail: user?.email,
         userName: user?.displayName,

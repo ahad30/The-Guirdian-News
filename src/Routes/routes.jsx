@@ -37,7 +37,7 @@ export const routes = createBrowserRouter([
 
       {
         path: "/myProfile",
-        element:  <UpdateProfile/>,
+        element:  <PrivateRoute><UpdateProfile/></PrivateRoute>,
       },
 
 
