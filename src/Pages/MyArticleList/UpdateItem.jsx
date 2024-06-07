@@ -172,7 +172,7 @@ const UpdateItem = () => {
           </div>
           {/* Submit Button */}
           <div className="flex justify-end">
-            <Button type="submit">Add Article</Button>
+            <Button type="submit">Update Article</Button>
           </div>
         </form>
 

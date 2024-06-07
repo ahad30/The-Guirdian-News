@@ -13,9 +13,6 @@ const useAdmin = () => {
             const res = await axiosSecure.get(`/users/admin/${user.email}`);
             return res.data?.admin;
         },
-        // // Optional: Cache the result and avoid refetching
-        // staleTime: 5 * 60 * 1000,  // 5 minutes
-        // cacheTime: 10 * 60 * 1000,  // 10 minutes
     });
 
     return [isAdmin, isAdminLoading];
