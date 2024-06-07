@@ -5,10 +5,10 @@ const ReasonRejectModal = ({ isOpen, setIsOpen, item, handleStatus }) => {
   // console.log(item)
   return (
     <>
-      {/* disabled={item?.status === 'Approved' || item?.status ==='Rejected'}  */}
+      
       <button
-
-        className='disabled:cursor-not-allowed text-gray-500 transition-colors duration-200   hover:text-yellow-500 focus:outline-none' onClick={() => setIsOpen(true)}>    <svg
+       
+        className='disabled:cursor-not-allowed text-gray-500 transition-colors duration-200   hover:text-yellow-500 focus:outline-none' onClick={() => setIsOpen(true)}>  <svg
           xmlns='http://www.w3.org/2000/svg'
           fill='none'
           viewBox='0 0 24 24'
