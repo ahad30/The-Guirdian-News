@@ -1,24 +1,36 @@
-import { useQuery } from '@tanstack/react-query';
-import React from 'react'
+import { useMutation, useQuery } from '@tanstack/react-query';
+import React, { useState } from 'react'
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { Link } from 'react-router-dom';
 import { Button } from '@material-tailwind/react';
 import { MdDelete } from 'react-icons/md';
 import moment from 'moment';
 import { FaUsers } from 'react-icons/fa';
+import toast from 'react-hot-toast';
+import { Spin } from 'antd';
+import ReasonRejectModal from '../../../components/ReasonRejectModal/ReasonRejectModal';
+
+
 
 
 const AllArticle = () => {
   const axiosSecure = useAxiosSecure();
-  // console.log(users)
-    const { data: articles = [], refetch } = useQuery({
+  const [isOpen, setIsOpen] = useState(false);
+  // const [selectItem , setSelectItem] = useState({});
+  
+  // const handleModalEditInfo = (selectItem) => {
+  //   setSelectItem(selectItem);
+
+  // };
+
+    const { data: articles = [], refetch, isLoading } = useQuery({
         queryKey: ['articles'],
         queryFn: async () => {
             const res = await axiosSecure.get('/allArticle');
             return res.data;
         }
     })
-    console.log(articles)
+    // console.log(articles)
 
     const truncateTitle = (title) => {
       const words = title.split(' ');
@@ -27,6 +39,34 @@ const AllArticle = () => {
       }
       return title;
     };
+
+  const { mutateAsync } = useMutation({
+    mutationFn: async ({ id, status }) => {
+      const { data } = await axiosSecure.patch(`/articleStatus/${id}`, { status })
+      console.log(data)
+      return data
+    },
+    onSuccess: () => {
+      // console.log('Wow, data updated')
+      toast.success('Status Updated')
+      refetch();
+    },
+  })
+
+  const handleStatus = async (id, prevStatus, status) => {
+    console.log(id, prevStatus, status)
+    if (prevStatus === status) {
+      return console.log('Error')
+    }
+    await mutateAsync({ id, status })
+  }
+
+
+if(isLoading){
+  return <div className='flex justify-center'><Spin/></div>
+}
+
+
   return (
     <div className='mb-5'>  
     <h1 className='text-center text-3xl font-bold mt-5 mb-5'>All Articles</h1>
@@ -158,7 +198,7 @@ const AllArticle = () => {
              <td className= {`px-4 py-4 text-sm text-gray-500 whitespace-nowrap`}>
              <div>
                   {item?.isPremium === 'Yes'? 'Yes' : <Button
-                                        onClick={() => handleMakeAdmin(user)}
+                                        // onClick={() => handleMakeAdmin(user)}
                                         className="px-2 text-[10px] py-2">
                                        Make Premium
                                     </Button>}
@@ -194,9 +234,9 @@ const AllArticle = () => {
                 
                         <button
                           onClick={() =>
-                            handleStatus(item?._id, item?.status, 'In Progress')
+                            handleStatus(item?._id, item?.status, 'Approved')
                           }
-                          disabled={item?.status === 'Complete'}
+                          disabled={item?.status === 'Approved' || item?.status ==='Rejected'}
                           className='disabled:cursor-not-allowed text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none'
                         >
                           <svg
@@ -215,28 +255,14 @@ const AllArticle = () => {
                           </svg>
                         </button>
                
-                        <button
-                          onClick={() =>
-                            handleStatus(item?._id, item?.status, 'Rejected')
-                          }
-                          disabled={item?.status === 'Complete'}
-                          className='disabled:cursor-not-allowed text-gray-500 transition-colors duration-200   hover:text-yellow-500 focus:outline-none'
-                        >
-                          <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            strokeWidth='1.5'
-                            stroke='currentColor'
-                            className='w-5 h-5'
-                          >
-                            <path
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                              d='M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636'
-                            />
-                          </svg>
-                        </button>
+                        <ReasonRejectModal
+                          isOpen={isOpen}
+                          setIsOpen={setIsOpen}
+                          item={item}
+                          handleStatus={handleStatus}
+                                                         
+                        >                      
+                        </ReasonRejectModal>
                       </div>
                     </td>
 

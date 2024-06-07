@@ -7,10 +7,20 @@ import useAuth from '../../hooks/useAuth';
 import { Button, Spinner } from '@material-tailwind/react';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { FloatButton } from 'antd';
+import RejectModal from '../../components/RejectModal/RejectModal';
+import { useState } from 'react';
+
 
 const MyArticleList = () => {
   const { user } = useAuth()
   const axiosSecure = useAxiosSecure()
+  const [isOpen, setIsOpen] = useState(false);
+
+
+
+
+
   
   const {
     data: articles = [],
@@ -20,11 +30,9 @@ const MyArticleList = () => {
     queryKey: ['myArticleList', user?.email],
     queryFn: async () => {
       const { data } = await axiosSecure.get(`/myArticleList/${user?.email}`)
-
       return data
     },
   })
-
   // console.log(articles)
   if (isLoading) {
     return <div className="flex justify-center items-center flex-col h-full p-24">
@@ -169,7 +177,7 @@ const MyArticleList = () => {
 
                       <td className='px-4 py-4 text-sm text-gray-500  whitespace-nowrap'>
                       <div
-                          className={`inline-flex items-center px-3 py-1 rounded-full gap-x-2 ${
+                          className={`flex justify-center items-center px-1 py-1 rounded-full gap-x-2 ${
                             item?.status === 'Pending' &&
                             'bg-yellow-100/60 text-yellow-500'
                           }  ${
@@ -187,61 +195,20 @@ const MyArticleList = () => {
                               item?.status === 'Rejected' && 'bg-red-500'
                             }  `}
                           ></span>
-                          <h2 className='text-sm font-normal '>{item?.status}</h2>
+                          <h2 className='text-sm font-normal'>{item?.status}</h2>
                         </div>
+                         <div className='flex justify-center mt-2'>
+                         {
+                           item?.status === 'Rejected' &&
+                          
+                          <RejectModal 
+                          isOpen={isOpen}
+                          setIsOpen={setIsOpen}
+                          />
+                          }
+                         </div>
                       </td>
-                                   
-                      {/* <td className='px-4 py-4 text-sm whitespace-nowrap'>
-                        <div className='flex items-center gap-x-6'>
-                  
-                          <button
-                            onClick={() =>
-                              handleStatus(item?._id, item?.status, 'In Progress')
-                            }
-                            disabled={item?.status === 'Complete'}
-                            className='disabled:cursor-not-allowed text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none'
-                          >
-                            <svg
-                              xmlns='http://www.w3.org/2000/svg'
-                              fill='none'
-                              viewBox='0 0 24 24'
-                              strokeWidth='1.5'
-                              stroke='currentColor'
-                              className='w-5 h-5'
-                            >
-                              <path
-                                strokeLinecap='round'
-                                strokeLinejoin='round'
-                                d='m4.5 12.75 6 6 9-13.5'
-                              />
-                            </svg>
-                          </button>
-                 
-                          <button
-                            onClick={() =>
-                              handleStatus(item?._id, item?.status, 'Rejected')
-                            }
-                            disabled={item?.status === 'Complete'}
-                            className='disabled:cursor-not-allowed text-gray-500 transition-colors duration-200   hover:text-yellow-500 focus:outline-none'
-                          >
-                            <svg
-                              xmlns='http://www.w3.org/2000/svg'
-                              fill='none'
-                              viewBox='0 0 24 24'
-                              strokeWidth='1.5'
-                              stroke='currentColor'
-                              className='w-5 h-5'
-                            >
-                              <path
-                                strokeLinecap='round'
-                                strokeLinejoin='round'
-                                d='M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636'
-                              />
-                            </svg>
-                          </button>
-                        </div>
-                      </td> */}
-
+            
                       <td className='px-4 py-4 text-sm whitespace-nowrap'>
                       <div className='flex items-center gap-x-3'>
                       <Link to={`/updateItem/${item?._id}`}>
