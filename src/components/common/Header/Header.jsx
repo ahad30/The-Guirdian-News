@@ -91,7 +91,7 @@ const Header = () => {
               viewTransitionName: isTransitioning ? "slide" : "",
             };
           }}
-          to="/allQueries" className="flex items-center text-[#150B2BB3]">
+          to="/allArticles" className="flex items-center text-[#150B2BB3]">
           All Article
         </NavLink>
       </Typography>
@@ -109,7 +109,7 @@ const Header = () => {
               viewTransitionName: isTransitioning ? "slide" : "",
             };
           }}
-          to="/allQueries" className="flex items-center text-[#150B2BB3]">
+          to="/subscription" className="flex items-center text-[#150B2BB3]">
       Subscription
         </NavLink>
       </Typography>
@@ -128,7 +128,7 @@ const Header = () => {
               viewTransitionName: isTransitioning ? "slide" : "",
             };
           }}
-          to="/allQueries" className="flex items-center text-[#150B2BB3]">
+          to="/premiumArticle" className="flex items-center text-[#150B2BB3]">
           Premium Article
         </NavLink>
       </Typography>
@@ -173,7 +173,7 @@ const Header = () => {
               <div className="text-teal-600 flex items-center">
 
 <img src={logo} className="w-[60px] h-[50px]" />
-<p className="text-lg font-bold">The Guirdian News</p>
+<p className="text-lg font-bold hidden lg:block">The Guirdian News</p>
 </div>
 
               </NavLink>
@@ -352,7 +352,7 @@ const Header = () => {
             </div>
           </div>
         </div>
-        <Collapse open={openNav} className={`flex justify-center`}>{navList}</Collapse>
+        <Collapse open={openNav} className={`flex`}>{navList}</Collapse>
       </Navbar>
     </div>
   );

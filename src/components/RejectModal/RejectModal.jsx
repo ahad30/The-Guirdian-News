@@ -21,7 +21,7 @@ const RejectModal = ({isOpen, setIsOpen ,item}) => {
       return data
     },
   })
-  console.log(reason);
+  // console.log(reason);
 
   return (
     <>

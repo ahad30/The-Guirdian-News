@@ -1,16 +1,16 @@
 import { Helmet } from "react-helmet-async";
 import Contact from "../Contact/Contact";
-import { useLoaderData } from "react-router-dom";
+
 import Blog from "./Blog/Blog";
-// import ArtCraftCategory from "./ArtCraftCategory/ArtCraftCategory";
 import Slider from "./Slider";
 import { Banner } from "./Banner";
-import RecentQueries from "./RecentQueries/RecentQueries";
+import RecentQueries from "./RecentPublisher/RecentPublisher";
+import RecentPublisher from "./RecentPublisher/RecentPublisher";
+import Statistics from "./Statistics/Statistics";
+import Pricing from "./Pricing/Pricing";
 
 const HomePage = () => {
 
-  // const loadedItems = useLoaderData();
-  // console.log(loadedItems);
   
   return (
     <div className="max-w-7xl mx-auto">
@@ -19,7 +19,9 @@ const HomePage = () => {
     </Helmet>
      <Slider></Slider>
      <Banner></Banner>
-     {/* <RecentQueries loadedItems = {loadedItems}></RecentQueries> */}
+    <RecentPublisher></RecentPublisher>
+    <Statistics></Statistics>
+    <Pricing></Pricing>
      <Blog></Blog>
      <Contact></Contact>
     </div>

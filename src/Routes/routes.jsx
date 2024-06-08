@@ -7,10 +7,6 @@ import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
 import PrivateRoute from "./PrivateRoute";
 import UpdateItem from "../Pages/MyArticleList/UpdateItem";
-import AllQueries from "../Pages/AllQueries/AllQueries";
-import AllQyeryDetails from "../Pages/AllQueries/AllQyeryDetails/AllQyeryDetails";
-import MyRecommendation from "../Pages/MyRecommendation/MyRecommendation";
-import RecommendationRequest from "../Pages/RecommendationRequest/RecommendationRequest";
 import AdminRoute from "./AdminRoute";
 import AdminHome from "../Pages/Dashboard/AdminHome/AdminHome";
 import AllArticle from "../Pages/Dashboard/AllArticle/AllArticle";
@@ -19,6 +15,10 @@ import AllUsers from "../Pages/Dashboard/AllUser/AllUsers";
 import AddArticle from "../Pages/MyArticleList/AddArticle";
 import MyArticleList from "../Pages/MyArticleList/MyArticleList";
 import UpdateProfile from "../Pages/Update-Profile/UpdateProfile";
+import AllArticles from "../Pages/AllArticles/AllArticles";
+import AllArticlesDetails from "../Pages/AllArticles/AllArticlesDetails";
+import Subscription from "../Pages/Subscription/Subscription";
+import PremiumArticle from "../Pages/PremiumArticle/PremiumArticle";
 
 
 
@@ -42,36 +42,29 @@ export const routes = createBrowserRouter([
 
 
       {
-        path: "/allQueries",
-        element:  <AllQueries/>,
+        path: "/allArticles",
+        element:  <AllArticles/>,
       },
 
       {
-        path: "/queryDetails/:id",
+        path: "/articleDetails/:id",
         element: 
        <PrivateRoute>
-        <AllQyeryDetails></AllQyeryDetails>
+       <AllArticlesDetails></AllArticlesDetails>
        </PrivateRoute>,
         loader: ({ params }) =>
-         fetch(`${import.meta.env.VITE_API_URL}/queryDetails/${params.id}`)
+         fetch(`${import.meta.env.VITE_API_URL}/articleDetails/${params.id}`)
+      },
+ 
+      {
+        path: "/subscription",
+        element:  <PrivateRoute><Subscription/></PrivateRoute>,
       },
 
       {
-        path: "/myRecommendation",
-        element: 
-       <PrivateRoute>
-        <MyRecommendation></MyRecommendation>
-       </PrivateRoute>,
-
+        path: "/premiumArticle",
+        element:  <PrivateRoute><PremiumArticle/></PrivateRoute>,
       },
-      {
-        path: "/recommendationRequest",
-        element: 
-       <PrivateRoute>
-        <RecommendationRequest></RecommendationRequest>
-       </PrivateRoute>
-      },
-
 
       {
         path: "/addArticle",

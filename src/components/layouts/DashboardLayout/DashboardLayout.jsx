@@ -27,7 +27,7 @@ const DashboardLayout = () => {
    { 
   isAdmin && 
   <>
-  <Card className="h-full w-full max-w-[20rem] p-4 shadow-xl rounded-none shadow-blue-gray-900/5 bg-cyan-700">
+  <Card className="h-screen w-full max-w-[20rem] p-4 shadow-xl rounded-none shadow-blue-gray-900/5 bg-cyan-700">
       <div className="mb-2 p-4">
         <Typography variant="h5" color="blue-gray">
         Admin
