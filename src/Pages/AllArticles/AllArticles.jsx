@@ -81,6 +81,14 @@ const AllArticles = () => {
         <>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          {
+            filteredArticles?.length === 0 && 
+                    <div>
+                     <p className='flex justify-center text-red-400 font-bold'>
+                     No data found.
+                     </p>
+                    </div>
+                  } 
             {
               filteredArticles.map(item =>
                 <div className='' key={item?._id}>
