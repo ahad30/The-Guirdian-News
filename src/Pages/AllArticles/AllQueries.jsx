@@ -5,6 +5,7 @@ import { BsFillGridFill } from "react-icons/bs";
 import { BsFillGrid3X2GapFill } from "react-icons/bs";
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import axios from 'axios';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 const AllQueries = () => {
   const [sort, setSort] = useState('')
@@ -12,11 +13,12 @@ const AllQueries = () => {
   const [searchText, setSearchText] = useState('')
   const [allQueries, setallQueries] = useState([]);
   const [layout, setLayout] = useState('3-column');
+  const axiosPublic = useAxiosPublic()
 
 
   useEffect(() => {
 
-    axios.get(`${import.meta.env.VITE_API_URL}/getSingleQuery`)
+    axiosPublic.get(`/allArticles`)
       .then(res => {
         console.log(res.data)
         setallQueries(res.data)

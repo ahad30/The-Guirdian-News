@@ -18,10 +18,6 @@ const MyArticleList = () => {
   const [isOpen, setIsOpen] = useState(false);
 
 
-
-
-
-  
   const {
     data: articles = [],
     isLoading,
@@ -73,6 +69,7 @@ const MyArticleList = () => {
 
   return (
     <div className='mb-5'>  
+
       <h1 className='text-center text-3xl font-bold mt-5 mb-5'>My Articles</h1>
       <div className='flex flex-col mt-6'>
         <div className=''>
@@ -204,6 +201,7 @@ const MyArticleList = () => {
                           <RejectModal 
                           isOpen={isOpen}
                           setIsOpen={setIsOpen}
+                          item={item}
                           />
                           }
                          </div>

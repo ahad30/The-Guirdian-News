@@ -9,6 +9,7 @@ import { FaUsers } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import { Spin } from 'antd';
 import ReasonRejectModal from '../../../components/ReasonRejectModal/ReasonRejectModal';
+import Swal from 'sweetalert2';
 
 const AllArticle = () => {
   const axiosSecure = useAxiosSecure();
@@ -51,6 +52,38 @@ const AllArticle = () => {
     await mutateAsync({ id, status });
     setIsOpen(false);
   };
+
+  const handleDelete = (_id) => {
+    console.log(_id);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`${import.meta.env.VITE_API_URL}/deleteArticle/${_id}`, {
+          method: 'DELETE'
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            if (data.deletedCount > 0) {
+              refetch();
+              Swal.fire('Deleted!', 'Your Article has been deleted.', 'success');
+              
+            }
+          });
+      }
+    });
+  };
+
+
+
+
 
   if (isLoading) {
     return <div><Spin /></div>;
@@ -142,13 +175,15 @@ const AllArticle = () => {
                               <path strokeLinecap='round' strokeLinejoin='round' d='m4.5 12.75 6 6 9-13.5' />
                             </svg>
                           </button>
-                          <button  
-                           disabled={item?.status === 'Approved' || item?.status ==='Rejected'}
+                        
+                     
+                          <button  disabled={item?.status === 'Approved' || item?.status ==='Rejected'} 
                           onClick={() => { setIsOpen(true); setSelectedItem(item); }} className='text-gray-500 transition-colors duration-200 hover:text-yellow-500 focus:outline-none disabled:cursor-not-allowed'>
                             <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth='1.5' stroke='currentColor' className='w-5 h-5'>
                               <path strokeLinecap='round' strokeLinejoin='round' d='M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636' />
                             </svg>
                           </button>
+                   
                         </div>
                       </td>
                       <td className='px-4 py-4 text-sm whitespace-nowrap'>

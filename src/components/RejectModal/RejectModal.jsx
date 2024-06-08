@@ -1,10 +1,27 @@
 import { Description, Dialog, DialogPanel, DialogTitle, Transition } from '@headlessui/react'
 import { Button } from 'antd';
 import { useState } from 'react'
+import useAuth from '../../hooks/useAuth';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { useQuery } from '@tanstack/react-query';
 
 
-const RejectModal = ({isOpen, setIsOpen}) => {
-
+const RejectModal = ({isOpen, setIsOpen ,item}) => {
+ console.log(item)
+  const { user } = useAuth()
+  const axiosSecure = useAxiosSecure()
+ 
+  const {
+    data: reason = [],
+    isLoading,
+  } = useQuery({
+    queryKey: ['myArticleReason', user?.email],
+    queryFn: async () => {
+      const { data } = await axiosSecure.get(`/myArticleReason/${user?.email}/${item._id}`)
+      return data
+    },
+  })
+  console.log(reason);
 
   return (
     <>
@@ -23,13 +40,23 @@ const RejectModal = ({isOpen, setIsOpen}) => {
     >
       <Dialog onClose={() => setIsOpen(false)} className="relative z-50 transition">
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-          <DialogPanel className="max-w-lg space-y-4 bg-gray-200 p-12 rounded-md">
-            <DialogTitle className="font-bold">Deactivate account</DialogTitle>
-            <Description>This will permanently deactivate your account</Description>
-            <p>Are you sure you want to deactivate your account? All of your data will be permanently removed.</p>
+          <DialogPanel className="w-full max-w-lg space-y-4 bg-gray-200 p-12 rounded-md">
+            <DialogTitle className="font-bold text-center">Reason Details</DialogTitle>
+            {
+              reason.length === 0 && <div className='text-center'>
+                <p className='text-red-500'>No reason found</p>
+              </div>
+            }
+           {reason.map(item => (
+              <>  
+              <div className='border-black p-4 border rounded-md'>
+                <Description key={item?._id}>{item?.title}</Description>
+              </div>
+           </>
+           ))}
+            
             <div className="flex justify-center gap-4">
               <Button onClick={() => setIsOpen(false)}>Cancel</Button>
-              <Button onClick={() => setIsOpen(false)}>Deactivate</Button>
             </div>
           </DialogPanel>
         </div>

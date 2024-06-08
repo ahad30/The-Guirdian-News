@@ -22,7 +22,7 @@ const options = [
 
 
 const AddArticle = () => {
-  const [loading , setLoading] = useState(false)
+  const [loading , setLoading] = useState(false);
   const { register, handleSubmit, reset, setValue } = useForm();
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
