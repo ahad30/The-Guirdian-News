@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import moment from 'moment';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import usePublisher from '../../hooks/usePublisher';
-
+import { LuFileBadge2 } from "react-icons/lu";
 const AllArticles = () => {
   const { id } = useParams();
   const [search, setSearch] = useState('')
@@ -19,7 +19,7 @@ const AllArticles = () => {
 
     axiosPublic.get(`/allArticles`)
       .then(res => {
-        // console.log(res.data)
+        console.log(res.data)
         setAllArticles(res.data)
       })
 
@@ -30,17 +30,14 @@ const AllArticles = () => {
     const viewedArticles = JSON.parse(localStorage.getItem('viewedArticles')) || {};
 
     if (viewedArticles[articleId]) {
-      // If the user has already viewed this article, just navigate to the details page
       navigate(`/articleDetails/${articleId}`);
     } else {
-      // Increment the view count
+
       axiosPublic.patch(`/incrementViewCount/${articleId}`)
         .then(res => {
-          console.log('View count incremented:', res.data);
-          // Update localStorage
+          // console.log('View count incremented:', res.data);
           viewedArticles[articleId] = true;
           localStorage.setItem('viewedArticles', JSON.stringify(viewedArticles));
-          // Navigate to the article details page
           navigate(`/articleDetails/${articleId}`);
         })
         .catch(error => console.error('Error incrementing view count:', error));
@@ -53,7 +50,7 @@ const AllArticles = () => {
     
     axiosPublic.get(`/articleSearch?search=${searchText ? searchText : ""}&filter=${filter}&publisherFilter=${publisherFilter ? publisherFilter : ""}`)
     .then((data) => {
-      console.log(data.data)
+      // console.log(data.data)
       setAllArticles(data?.data?.result);
     })
    }, [axiosPublic,filter ,searchText , publisherFilter]);
@@ -139,61 +136,60 @@ const AllArticles = () => {
                   } 
             {
               filteredArticles.map(item =>
+           
                 <div className='' key={item?._id}>
-                  <div className="max-w-2xl overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
-                    <img className="object-cover w-full h-64" src={item?.image} alt="Product" />
-
-                    <div className="p-6">
-                      <div>
-                          <p className="text-xs font-bold text-gray-600 uppercase dark:text-blue-400">{item?.title}</p>
-                        <div className='flex justify-between'>
-                        <p className="text-xs font-medium text-blue-600 uppercase dark:text-blue-400 mt-3">
-                        {item?.publisher?.label}</p>
-                        <p className="text-xs font-medium text-green-600 uppercase dark:text-blue-400 mt-3">
-                        #{item?.tags?.label}</p>
-                        <p className="text-xs font-medium text-green-600 uppercase dark:text-blue-400 mt-3">
-                        #{item?.viewCount}</p>
-                        </div>
-                        
-                        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-
-                          {item?.description}
-                        </p>
+                  <div className= {`max-w-2xl overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800 ${item?.isPremium === 'Yes' && 
+                  'bg-amber-50'}`}>
+              
+                <div className='relative'>
+                      <img className="object-cover w-full h-64" src={item?.image} alt="Product" />
+                      <div className='absolute left-[295px] bottom-[200px]'>
+                        {item?.isPremium === 'Yes' && <>
+                          <div><LuFileBadge2 size={40} className='text-red-400'></LuFileBadge2></div>
+                        </>}
                       </div>
-
-                      <div className="mt-4">
-
-                        {/* <div className="flex items-center">
-                          <img className="object-cover h-10 rounded-full" src={item?.posterInfo?.photo} alt="Avatar" />
-                          <div>
-                            <a href="#" className="mx-2 font-semibold text-gray-700 dark:text-gray-200" role="link">{item?.posterInfo?.userName}</a>
-                           
-                          </div>
-                        </div> */}
-                        <div className='flex justify-between items-center mt-4'>
-                          <div>
-                            <p className="mx-1 text-xs text-gray-600 dark:text-gray-300">
-                              {moment(item?.deadline).format('MMMM Do YYYY, h:mm:ss a')}
-                            </p>
-                          </div>
-                          <Link to={`/articleDetails/${item?._id}`}>
-                            <button   onClick={() => handleViewCount(item?._id)}
-                            disabled={item?.isPremium === 'Yes' && item?.user.subscription === null}
-                             className='text-sm bg-[#23BE0A] p-2 text-white rounded-md'> Details</button>
-                          </Link>
-                        </div>
-
+                    </div><div className="p-6">
                         <div>
-                          {item?.isPremium === 'Yes' && <>
-                            <div>Article is Premium</div>
-                          </>}
+                          <p className="text-xs font-bold text-gray-600 uppercase dark:text-blue-400">{item?.title}</p>
+                          <div className='flex justify-between'>
+                            <p className="text-xs font-medium text-blue-600 uppercase dark:text-blue-400 mt-3">
+                              {item?.publisher?.label}</p>
+                            <p className="text-xs font-medium text-green-600 uppercase dark:text-blue-400 mt-3">
+                              #{item?.tags?.label}</p>
+
+                          </div>
+
+                          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+
+                            {item?.description}
+                          </p>
                         </div>
 
+                        <div className="mt-4">
 
+
+                          <div className='flex justify-between items-center mt-4'>
+                            <div>
+                              <p className="mx-1 text-xs text-gray-600 dark:text-gray-300">
+                                {moment(item?.deadline).format('MMMM Do YYYY, h:mm:ss a')}
+                              </p>
+                            </div>
+
+                            <button onClick={() => handleViewCount(item?._id)}
+                              disabled={item?.isPremium === 'Yes' && item?.user?.subscription === null}
+
+                              className='disabled:cursor-not-allowed text-sm bg-[#23BE0A] p-2 text-white rounded-md'> Details</button>
+
+                          </div>
+
+
+
+
+                        </div>
                       </div>
-                    </div>
                   </div>
                 </div>)
+              
             }
           </div>
         </>

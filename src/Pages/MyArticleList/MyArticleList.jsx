@@ -149,7 +149,9 @@ const MyArticleList = () => {
                         {item?.title}
                       </td>
                       <td className='px-4 py-4 text-sm text-gray-500  whitespace-nowrap'>
-                        <Link><Button className='px-2 py-2 bg-green-400'>View Details</Button></Link>
+                        <Link to={`/articleDetails/${item?._id}`}>
+                        <Button className='px-2 py-2 bg-green-400'>View Details</Button>
+                        </Link>
                       </td>
 
                <td className= {`px-4 py-4 text-sm text-gray-500 whitespace-nowrap`}>

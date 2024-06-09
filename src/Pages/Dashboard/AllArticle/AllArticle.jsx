@@ -1,7 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react'
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
-import { Link } from 'react-router-dom';
 import { Button } from '@material-tailwind/react';
 import { MdDelete } from 'react-icons/md';
 import moment from 'moment';
@@ -35,7 +34,7 @@ const AllArticle = () => {
   const { mutateAsync } = useMutation({
     mutationFn: async ({ id, status }) => {
       const { data } = await axiosSecure.patch(`/articleStatus/${id}`, { status });
-      console.log(data);
+      // console.log(data);
       return data;
     },
     onSuccess: () => {
@@ -52,6 +51,31 @@ const AllArticle = () => {
     await mutateAsync({ id, status });
     setIsOpen(false);
   };
+
+
+  const { mutateAsync: premiumStatus } = useMutation({
+    mutationFn: async ({ id, isPremium }) => {
+      const { data } = await axiosSecure.patch(`/articlePremium/${id}`,
+         {isPremium});
+      console.log(data);
+      return data;
+    },
+    onSuccess: () => {
+      toast.success('Premium Updated');
+      refetch();
+    },
+  });
+
+
+  const handlePremiumStatus = async (id, prevStatus, isPremium) => {
+    console.log(id, prevStatus, isPremium);
+    if (prevStatus === isPremium) {
+      return console.log('Error');
+    }
+    await premiumStatus({ id, isPremium });
+   
+  };
+ 
 
   const handleDelete = (_id) => {
     console.log(_id);
@@ -82,11 +106,8 @@ const AllArticle = () => {
   };
 
 
-
-
-
   if (isLoading) {
-    return <div><Spin /></div>;
+    return <div className='flex justify-center mt-10'><Spin /></div>;
   }
 
   return (
@@ -121,6 +142,9 @@ const AllArticle = () => {
                     <th scope='col' className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500'>
                       <div className='flex items-center gap-x-3'><span>Subscription</span></div>
                     </th>
+                    <th scope='col' className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500'>
+                      <div className='flex items-center gap-x-3'><span>isPremium</span></div>
+                    </th>
                     <th scope='col' className='px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500'>
                       <span>Premium</span>
                     </th>
@@ -144,11 +168,35 @@ const AllArticle = () => {
                       <td className='text-sm text-gray-500 px-4  whitespace-nowrap'>{moment(item?.deadline).format("MMM Do YY")}</td>
                       <td className='px-4 py-4 text-sm text-gray-500 text-center'>{item?.publisher.label}</td>
                       <td className='px-4 py-4 text-sm text-gray-500 text-center'>
-                        {item?.user?.subscription === null ? 'Null' : "Yes"}
+                        {item?.user?.subscription === null ? 'Not yet' : "Yes"}
                       </td>
+                      <td className= {`px-4 py-4 text-sm text-gray-500 whitespace-nowrap`}>
+               <div
+                          className={`inline-flex items-center px-3 py-1 rounded-full gap-x-2 ${
+                            item?.isPremium === 'Yes' &&
+                            'bg-yellow-100/60 text-green-500'
+                          }   ${
+                            item?.isPremium === 'No' &&
+                            'bg-red-100/60 text-red-500'
+                          } `}
+                        >                      
+                      <span
+                            className={`h-1.5 w-1.5 rounded-full ${item?.isPremium === 'Yes' && 'bg-green-500'} ${
+                              item?.isPremium === 'No' && 'bg-red-500'
+                            } `}
+                          ></span>
+                      <h2> {item?.isPremium}</h2>
+                    </div>
+                      </td>
+
                       <td className={`px-4 py-4 text-sm text-gray-500 whitespace-nowrap`}>
                         <div>
-                          {item?.isPremium === 'Yes' ? 'Yes' : <Button className="px-2 text-[10px] py-2">Make Premium</Button>}
+                         <Button 
+                          disabled={item?.isPremium === 'Yes'}
+                          onClick={() => handlePremiumStatus(item?._id, item?.isPremium, 'Yes')}
+                          className="px-2 text-[10px] py-2 disabled:cursor-not-allowed text-gray-500 transition-colors duration-200 hover:text-red-500 focus:outline-none">Make Premium
+                            
+                          </Button>
                         </div>
                       </td>
                       <td className='px-4 py-4 text-sm text-gray-500  whitespace-nowrap'>
