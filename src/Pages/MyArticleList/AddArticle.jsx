@@ -15,9 +15,9 @@ const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const options = [
-  { value: 'sport', label: 'Sport' },
-  { value: 'nation', label: 'Nation' },
-  { value: 'job', label: 'Job' }
+  { value: 'Sport', label: 'Sport' },
+  { value: 'Nation', label: 'Nation' },
+  { value: 'Job', label: 'Job' }
 ]
 
 

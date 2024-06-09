@@ -15,7 +15,7 @@ const Statistics = () => {
             setUser(res.data)
           })
       }, [])
-      const premiumUser = user.filter(item => item.subscription === 'Yes');
+      const premiumUser = user.filter(item => item.subscription === "Yes");
     console.log(premiumUser)
   return (
     <section className="bg-white">
@@ -47,14 +47,14 @@ const Statistics = () => {
             <dt className="order-last text-lg font-medium text-gray-500">Premium User</dt>
   
             <dd className="text-4xl font-extrabold text-blue-600 md:text-5xl">
-            {
-                premiumUser.map(item => (
+            
+              
                     <>
                     <dd className="text-4xl font-extrabold text-blue-600 md:text-5xl">
-                    <CountUp duration={10} end={item?.length}/></dd> 
+                    <CountUp duration={10} end={premiumUser?.length}/></dd> 
                     </>
-                ))
-            }
+                
+            
             
             </dd>
           </div>

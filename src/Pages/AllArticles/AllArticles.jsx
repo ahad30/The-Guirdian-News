@@ -13,6 +13,7 @@ const AllArticles = () => {
   const [publisher] = usePublisher();
   const axiosPublic = useAxiosPublic()
   const [publisherFilter, setPublisherFilter] = useState('')
+  const [filter, setFilter] = useState('')
 // console.log(publisher)
 
   useEffect(() => {
@@ -22,16 +23,24 @@ const AllArticles = () => {
         console.log(res.data)
         setAllArticles(res.data)
       })
-  }, [])
+  }, [axiosPublic])
 
-  const handleSearch = e => {
-    e.preventDefault()
-    setSearch(searchText)
-    axiosPublic.get(`/articleSearch?search=${searchText ? searchText : ""}&publisherFilter=${publisherFilter}`)
+
+  
+   useEffect(() => {
+    
+    axiosPublic.get(`/articleSearch?search=${searchText ? searchText : ""}&filter=${filter}&publisherFilter=${publisherFilter ? publisherFilter : ""}`)
     .then((data) => {
       console.log(data.data)
       setAllArticles(data?.data?.result);
     })
+   }, [axiosPublic,filter ,searchText , publisherFilter]);
+  
+
+
+  const handleSearch = e => {
+    e.preventDefault()
+    setSearch(searchText)
   }
   const filteredArticles = allArticles.filter(article => article.status === 'Approved');
   // console.log(search)
@@ -58,6 +67,23 @@ const AllArticles = () => {
         ))}
             </select>
     </div>
+    <div className='flex justify-center lg:block lg:justify-start'>
+            <select
+              onChange={e => {
+                setFilter(e.target.value)
+                // setCurrentPage(1)
+              }}
+              value={filter}
+              name='tags'
+              id='tags'
+              className='border p-4 rounded-lg'
+            >
+              <option value=''>Filter By Tags</option>
+              <option value='Sport'>Sport</option>
+              <option value='Nation'>Nation</option>
+              <option value='Job'>Job</option>
+            </select>
+          </div>
       <div>
       <form onSubmit={handleSearch} className='mb-10'>
             <div className='flex p-1 overflow-hidden border rounded-lg focus-within:ring focus-within:ring-opacity-40 focus-within:border-blue-400 w-[90%] lg:w-[90%] mx-auto focus-within:ring-blue-300'>
