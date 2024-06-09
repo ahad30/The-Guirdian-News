@@ -13,7 +13,7 @@ const Slider = () => {
   useEffect(() => {
     axiosPublic.get('/trendingArticles')
       .then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         setTrendingArticles(res.data);
       })
       .catch(error => console.error('Error fetching trending articles:', error));
