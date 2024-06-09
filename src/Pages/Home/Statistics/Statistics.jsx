@@ -11,10 +11,10 @@ const Statistics = () => {
 
         axiosPublic.get(`/users`)
           .then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             setUser(res.data)
           })
-      }, [])
+      }, [axiosPublic])
       const premiumUser = user.filter(item => item.subscription === "Yes");
     console.log(premiumUser)
   return (

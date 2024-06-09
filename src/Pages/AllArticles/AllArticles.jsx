@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import  { useEffect, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import moment from 'moment';
-import { BsFillGridFill } from "react-icons/bs";
-import { BsFillGrid3X2GapFill } from "react-icons/bs";
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import usePublisher from '../../hooks/usePublisher';
 
 const AllArticles = () => {
+  const { id } = useParams();
   const [search, setSearch] = useState('')
   const [searchText, setSearchText] = useState('')
   const [allArticles, setAllArticles] = useState([]);
@@ -14,16 +13,39 @@ const AllArticles = () => {
   const axiosPublic = useAxiosPublic()
   const [publisherFilter, setPublisherFilter] = useState('')
   const [filter, setFilter] = useState('')
-// console.log(publisher)
+  const navigate = useNavigate();
 
   useEffect(() => {
 
     axiosPublic.get(`/allArticles`)
       .then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         setAllArticles(res.data)
       })
-  }, [axiosPublic])
+
+     
+  }, [ axiosPublic])
+
+  const handleViewCount = (articleId) => {
+    const viewedArticles = JSON.parse(localStorage.getItem('viewedArticles')) || {};
+
+    if (viewedArticles[articleId]) {
+      // If the user has already viewed this article, just navigate to the details page
+      navigate(`/articleDetails/${articleId}`);
+    } else {
+      // Increment the view count
+      axiosPublic.patch(`/incrementViewCount/${articleId}`)
+        .then(res => {
+          console.log('View count incremented:', res.data);
+          // Update localStorage
+          viewedArticles[articleId] = true;
+          localStorage.setItem('viewedArticles', JSON.stringify(viewedArticles));
+          // Navigate to the article details page
+          navigate(`/articleDetails/${articleId}`);
+        })
+        .catch(error => console.error('Error incrementing view count:', error));
+    }
+  };
 
 
   
@@ -123,12 +145,14 @@ const AllArticles = () => {
 
                     <div className="p-6">
                       <div>
-                          <p className="text-xs font-medium text-blue-600 uppercase dark:text-blue-400">{item?.title}</p>
+                          <p className="text-xs font-bold text-gray-600 uppercase dark:text-blue-400">{item?.title}</p>
                         <div className='flex justify-between'>
                         <p className="text-xs font-medium text-blue-600 uppercase dark:text-blue-400 mt-3">
                         {item?.publisher?.label}</p>
                         <p className="text-xs font-medium text-green-600 uppercase dark:text-blue-400 mt-3">
                         #{item?.tags?.label}</p>
+                        <p className="text-xs font-medium text-green-600 uppercase dark:text-blue-400 mt-3">
+                        #{item?.viewCount}</p>
                         </div>
                         
                         <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
@@ -153,7 +177,7 @@ const AllArticles = () => {
                             </p>
                           </div>
                           <Link to={`/articleDetails/${item?._id}`}>
-                            <button
+                            <button   onClick={() => handleViewCount(item?._id)}
                             disabled={item?.isPremium === 'Yes' && item?.user.subscription === null}
                              className='text-sm bg-[#23BE0A] p-2 text-white rounded-md'> Details</button>
                           </Link>

@@ -13,6 +13,7 @@ import toast from 'react-hot-toast';
 import { Tooltip } from "react-tooltip";
 import useAuth from "../../../hooks/useAuth";
 import useAdmin from "../../../hooks/useAdmin";
+import useUser from "../../../hooks/useUser";
 
 
 const Header = () => {
@@ -20,6 +21,7 @@ const Header = () => {
   const { user, logOut } = useAuth()
   const navigate = useNavigate();
   const [isAdmin] = useAdmin();
+  const [users]= useUser()
   const [theme, setTheme] = useState('light')
 
   useEffect(() => {
@@ -114,24 +116,27 @@ const Header = () => {
         </NavLink>
       </Typography>
 
-      <Typography
-        as="li"
-        variant="large"
-        color="blue-gray"
-        className={`p-1 text-sm`}
-      >
-        <NavLink
-          style={({ isActive, isTransitioning }) => {
-            return {
-              fontWeight: isActive ? "bold" : "",
-              color: isActive ? "red" : "black",
-              viewTransitionName: isTransitioning ? "slide" : "",
-            };
-          }}
-          to="/premiumArticle" className="flex items-center text-[#150B2BB3]">
-          Premium Article
-        </NavLink>
-      </Typography>
+
+     {  users.subscription === "Yes" &&
+       <Typography
+       as="li"
+       variant="large"
+       color="blue-gray"
+       className={`p-1 text-sm`}
+     >
+       <NavLink
+         style={({ isActive, isTransitioning }) => {
+           return {
+             fontWeight: isActive ? "bold" : "",
+             color: isActive ? "red" : "black",
+             viewTransitionName: isTransitioning ? "slide" : "",
+           };
+         }}
+         to="/premiumArticle" className="flex items-center text-[#150B2BB3]">
+         Premium Article
+       </NavLink>
+     </Typography>
+     }
 
 
 
