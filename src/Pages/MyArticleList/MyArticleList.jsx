@@ -17,7 +17,6 @@ const MyArticleList = () => {
   const axiosSecure = useAxiosSecure()
   const [isOpen, setIsOpen] = useState(false);
 
-
   const {
     data: articles = [],
     isLoading,

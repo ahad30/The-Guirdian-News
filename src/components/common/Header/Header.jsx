@@ -14,6 +14,8 @@ import { Tooltip } from "react-tooltip";
 import useAuth from "../../../hooks/useAuth";
 import useAdmin from "../../../hooks/useAdmin";
 import useUser from "../../../hooks/useUser";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import { useQuery } from "@tanstack/react-query";
 
 
 const Header = () => {
@@ -21,26 +23,19 @@ const Header = () => {
   const { user, logOut } = useAuth()
   const navigate = useNavigate();
   const [isAdmin] = useAdmin();
-  const [users]= useUser()
-  const [theme, setTheme] = useState('light')
+ const axiosPublic = useAxiosPublic()
 
-  useEffect(() => {
-    localStorage.setItem('theme', theme)
-    const localTheme = localStorage.getItem('theme')
-    document.querySelector('html').setAttribute('data-theme', localTheme)
-  }, [theme])
-
-  const handleToggle = e => {
-    // console.log(e.target.value)
-    if (e.target.checked) {
-      setTheme('dark')
-    }
-    else {
-      setTheme('light')
-    }
-  }
-
-
+  const {
+    data: articles = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ['premiumtaken', user?.email],
+    queryFn: async () => {
+      const { data } = await axiosPublic.get(`/premiumtaken/${user?.email}`)
+      return data
+    },
+  })
   const handleSignOut = () => {
       logOut()
       .then(() => {
@@ -117,8 +112,10 @@ const Header = () => {
       </Typography>
 
 
-     {  users.subscription === "Yes" &&
-       <Typography
+     { articles.map(item=> (
+      <>
+           {
+            item?.isChange === true &&    <Typography
        as="li"
        variant="large"
        color="blue-gray"
@@ -136,6 +133,10 @@ const Header = () => {
          Premium Article
        </NavLink>
      </Typography>
+           }
+      </>
+     ))
+      
      }
 
 

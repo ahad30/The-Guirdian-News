@@ -27,6 +27,7 @@ const RecentPublisher = () => {
                 <p className='text-center text-red-400 font-bold'>No data found.</p>
             ) : (
                 <div
+                    
                     data-aos='fade-zoom-in'
                     data-aos-offset='200'
                     data-aos-easing='ease-in-sine'

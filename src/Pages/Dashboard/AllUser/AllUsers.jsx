@@ -61,25 +61,26 @@ const AllUsers = () => {
                 <h2 className="text-xl">All Users</h2>
                 <h2 className="text-xl">Total Users: <CountUp end={users.length} /></h2>
             </div>
-            <div className="overflow-x-auto mx-auto">
-                <table className="table">
+            <div className="overflow-x-auto w-[95%] max-w-6xl mx-auto py-2  md:px-6 lg:px-8">
+            <div className="border border-gray-300  md:rounded-lg">
+                <table className="min-w-full divide-y divide-gray-200">
                     {/* head */}
                     <thead>
                         <tr>
-                            <th></th>
+                            <th>Serial</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Role</th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="bg-white divide-y divide-gray-300 ">
                         {
                             users.map((user, index) => <tr key={user._id}>
                                 <th>{index + 1}</th>
-                                <td>{user.name}</td>
-                                <td>{user.email}</td>
-                                <td>
+                                <td className="px-5 text-center">{user.name}</td>
+                                <td className="text-center">{user.email}</td>
+                                <td className="text-center">
                                     {user.role === 'admin' ? 'Admin' : <Button
                                         onClick={() => handleMakeAdmin(user)}
                                         className="">
@@ -87,7 +88,7 @@ const AllUsers = () => {
                                         text-xl"></FaUsers>
                                     </Button>}
                                 </td>
-                                <td>
+                                <td className="text-center">
                                     <button
                                         onClick={() => handleDeleteUser(user)}
                                         className="btn btn-ghost btn-lg">
@@ -99,6 +100,7 @@ const AllUsers = () => {
 
                     </tbody>
                 </table>
+           </div>
             </div>
         </div>
     );

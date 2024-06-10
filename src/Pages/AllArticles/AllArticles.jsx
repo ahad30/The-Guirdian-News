@@ -140,7 +140,7 @@ const AllArticles = () => {
            
                 <div className='' key={item?._id}>
                   <div className= {`max-w-2xl overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800 ${item?.isPremium === 'Yes' && 
-                  'bg-amber-50'}`}>
+                  'bg-amber-100'}`}>
               
                 <div className='relative'>
                       <img className="object-cover w-full h-64" src={item?.image} alt="Product" />
@@ -177,7 +177,7 @@ const AllArticles = () => {
                             </div>
 
                             <button onClick={() => handleViewCount(item?._id)}
-                              disabled={item?.isPremium === 'Yes' && item?.user?.subscription == null}
+                              disabled={item?.isPremium === 'Yes' && item?.user?.isChange === false}
 
                               className='disabled:cursor-not-allowed text-sm bg-[#23BE0A] p-2 text-white rounded-md'> Details</button>
 

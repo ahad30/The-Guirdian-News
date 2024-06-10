@@ -15,7 +15,8 @@ const Statistics = () => {
             setUser(res.data)
           })
       }, [axiosPublic])
-      const premiumUser = user.filter(item => item.subscription === "Yes");
+      const premiumUser = user.filter(item => item.isChange === true);
+      const normalUser = user.filter(item => item.isChange === false);
     // console.log(premiumUser)
   return (
     <section className="bg-white">
@@ -40,7 +41,7 @@ const Statistics = () => {
             <dt className="order-last text-lg font-medium text-gray-500">Normal User</dt>
   
             <dd className="text-4xl font-extrabold text-blue-600 md:text-5xl">
-              <CountUp duration={10} end={user.length}/></dd>
+              <CountUp duration={10} end={normalUser.length}/></dd>
           </div>
   
           <div className="flex flex-col rounded-lg bg-blue-50 px-4 py-8 text-center">

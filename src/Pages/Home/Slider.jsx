@@ -2,7 +2,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y , Autoplay} from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/bundle';
-import Image1 from '../../assets/Banner-1.jpg'
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import { useEffect, useState } from 'react';
 
@@ -22,7 +21,6 @@ const Slider = () => {
   return (
 
     <Swiper
-
     modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
     spaceBetween={50}
     slidesPerView={1}
@@ -38,7 +36,7 @@ const Slider = () => {
      trendingArticles.map((item)=> (
        <>
      
-      <SwiperSlide>
+      <SwiperSlide key={item?._id}>
          <section
     className="bg-gray-900 text- mb-10  bg-no-repeat bg-cover 
     h-[600px] lg:h-[500px] bg-center"  style={{backgroundImage: `url(${item?.image})`}}>

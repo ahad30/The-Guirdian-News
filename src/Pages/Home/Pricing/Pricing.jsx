@@ -39,7 +39,7 @@ const Pricing = () => {
               <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
             </svg>
   
-            <span className="text-gray-700"> 20 users included </span>
+            <span className="text-gray-700"> Can post unlimited articles </span>
           </li>
   
           <li className="flex items-center gap-1">
@@ -118,7 +118,7 @@ const Pricing = () => {
           </li>
         </ul>
   
-     <Link to={`/subscription`}>
+     <Link to={`/subscription?price=30`}>
      <div
           className="mt-8 block rounded-full border border-indigo-600 bg-indigo-600 px-12 py-3 text-center text-sm font-medium text-white hover:bg-indigo-700 hover:ring-1 hover:ring-indigo-700 focus:outline-none focus:ring active:text-indigo-500"
         >
@@ -154,7 +154,7 @@ const Pricing = () => {
               <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
             </svg>
   
-            <span className="text-gray-700"> 10 users included </span>
+            <span className="text-gray-700"> Can access different Features</span>
           </li>
   
           <li className="flex items-center gap-1">
@@ -203,7 +203,7 @@ const Pricing = () => {
           </li>
         </ul>
   
-        <Link to={`/subscription`}>
+        <Link to={`/subscription?price=20`}>
      <div
           className="mt-8 block rounded-full border border-indigo-600 bg-indigo-600 px-12 py-3 text-center text-sm font-medium text-white hover:bg-indigo-700 hover:ring-1 hover:ring-indigo-700 focus:outline-none focus:ring active:text-indigo-500"
         >
