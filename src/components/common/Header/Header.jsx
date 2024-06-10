@@ -115,7 +115,8 @@ const Header = () => {
      { articles.map(item=> (
       <>
            {
-            item?.isChange === true &&    <Typography
+            item?.isChange === true &&
+                <Typography
        as="li"
        variant="large"
        color="blue-gray"

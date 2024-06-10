@@ -4,8 +4,9 @@ import moment from 'moment';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import usePublisher from '../../hooks/usePublisher';
 import { LuFileBadge2 } from "react-icons/lu";
-import useUser from '../../hooks/useUser';
-import toast from 'react-hot-toast';
+import { useQuery } from '@tanstack/react-query';
+import useAuth from '../../hooks/useAuth';
+
 const AllArticles = () => {
   const { id } = useParams();
   const [search, setSearch] = useState('')
@@ -13,10 +14,24 @@ const AllArticles = () => {
   const [allArticles, setAllArticles] = useState([]);
   const [publisher] = usePublisher();
   const axiosPublic = useAxiosPublic();
-  const [users] = useUser();
   const [publisherFilter, setPublisherFilter] = useState('')
   const [filter, setFilter] = useState('')
   const navigate = useNavigate();
+ const {user} = useAuth();
+
+  const {
+    data: articles = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ['premiumtaken', user?.email],
+    queryFn: async () => {
+      const { data } = await axiosPublic.get(`/premiumtaken/${user?.email}`)
+      return data
+    },
+  })
+
+
 
   useEffect(() => {
 
@@ -175,11 +190,16 @@ const AllArticles = () => {
                                 {moment(item?.deadline).format('MMMM Do YYYY, h:mm:ss a')}
                               </p>
                             </div>
-
+                           <Link to={`/articleDetails/${item?._id}`}>
                             <button onClick={() => handleViewCount(item?._id)}
-                              disabled={item?.isPremium === 'Yes' && item?.user?.isChange === false}
-
-                              className='disabled:cursor-not-allowed text-sm bg-[#23BE0A] p-2 text-white rounded-md'> Details</button>
+                              disabled={articles.map(item=> (
+                                <>
+                                  { item?.isChange === false}
+                                </>
+                              ))}
+                       
+                              className='disabled:cursor-not-allowed text-sm bg-[#23BE0A] p-2 text-white rounded-md'>Details</button>
+                          </Link>
 
                           </div>
 
