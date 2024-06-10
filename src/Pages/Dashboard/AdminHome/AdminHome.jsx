@@ -1,14 +1,9 @@
-import React from 'react'
-import { Chart } from "react-google-charts";
 
-const data = [
-  ["Task", "Hours per Day"],
-  ["Work", 11],
-  ["Eat", 2],
-  ["Commute", 2],
-  ["Watch TV", 2],
-  ["Sleep", 7],
-];
+import { Chart } from "react-google-charts";
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import { useQuery } from '@tanstack/react-query'
+
+
 
 const lineData = [
   ["Year", "Sales", "Expenses"],
@@ -18,31 +13,56 @@ const lineData = [
   ["2007", 1030, 540],
 ];
 
-const options = {
-  title: "Company Performance",
+const lineOptions = {
+  title: "Publisher article",
   curveType: "function",
   legend: { position: "bottom" },
 };
 
 const AdminHome = () => {
+   const axiosSecure = useAxiosSecure()
+  
+  
+  const { data: statData = [], isLoading } = useQuery({
+    queryKey: ['statData'],
+    queryFn: async () => {
+      const { data } = await axiosSecure.get('/articles/countByPublisher')
+      return data
+    },
+  })
+  // console.log(statData)
+
+  const chartData = [
+    ["Publisher", "Number of Articles"],
+    ...statData.map(item => [item.publisher, item.count])
+  ];
+
+  const options = {
+    title: "Number of Articles by Publisher",
+    is3D: true,
+  };
+
+
+
   return (
     <div className='flex items-center'> 
     <Chart
     chartType="PieChart"
-    data={data}
-
+    data={chartData}
     width={"100%"}
     height={"400px"}
+    options={options}
   />
+
      <Chart
       chartType="LineChart"
       width="100%"
       height="400px"
-      data={lineData}
-      options={options}
+      data={chartData}
+      options={lineOptions}
     />
   </div>
   )
 }
 
-export default AdminHome
+export default AdminHome;

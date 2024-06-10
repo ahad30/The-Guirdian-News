@@ -4,13 +4,16 @@ import moment from 'moment';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import usePublisher from '../../hooks/usePublisher';
 import { LuFileBadge2 } from "react-icons/lu";
+import useUser from '../../hooks/useUser';
+import toast from 'react-hot-toast';
 const AllArticles = () => {
   const { id } = useParams();
   const [search, setSearch] = useState('')
   const [searchText, setSearchText] = useState('')
   const [allArticles, setAllArticles] = useState([]);
   const [publisher] = usePublisher();
-  const axiosPublic = useAxiosPublic()
+  const axiosPublic = useAxiosPublic();
+  const [users] = useUser();
   const [publisherFilter, setPublisherFilter] = useState('')
   const [filter, setFilter] = useState('')
   const navigate = useNavigate();
@@ -19,7 +22,7 @@ const AllArticles = () => {
 
     axiosPublic.get(`/allArticles`)
       .then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         setAllArticles(res.data)
       })
 
@@ -27,15 +30,14 @@ const AllArticles = () => {
   }, [ axiosPublic])
 
   const handleViewCount = (articleId) => {
+  
     const viewedArticles = JSON.parse(localStorage.getItem('viewedArticles')) || {};
-
     if (viewedArticles[articleId]) {
       navigate(`/articleDetails/${articleId}`);
     } else {
-
       axiosPublic.patch(`/incrementViewCount/${articleId}`)
         .then(res => {
-          // console.log('View count incremented:', res.data);
+          console.log('View count incremented:', res.data);
           viewedArticles[articleId] = true;
           localStorage.setItem('viewedArticles', JSON.stringify(viewedArticles));
           navigate(`/articleDetails/${articleId}`);
@@ -46,8 +48,7 @@ const AllArticles = () => {
 
 
   
-   useEffect(() => {
-    
+   useEffect(() => {  
     axiosPublic.get(`/articleSearch?search=${searchText ? searchText : ""}&filter=${filter}&publisherFilter=${publisherFilter ? publisherFilter : ""}`)
     .then((data) => {
       // console.log(data.data)
@@ -176,7 +177,7 @@ const AllArticles = () => {
                             </div>
 
                             <button onClick={() => handleViewCount(item?._id)}
-                              disabled={item?.isPremium === 'Yes' && item?.user?.subscription === null}
+                              disabled={item?.isPremium === 'Yes' && item?.user?.subscription == null}
 
                               className='disabled:cursor-not-allowed text-sm bg-[#23BE0A] p-2 text-white rounded-md'> Details</button>
 
