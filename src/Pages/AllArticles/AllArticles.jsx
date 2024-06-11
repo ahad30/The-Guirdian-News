@@ -192,12 +192,8 @@ return (
                       </div>
                       <Link to={`/articleDetails/${item?._id}`}>
                         <button onClick={() => handleViewCount(item?._id)}
-                          disabled={articles.map(item => (
-
-                            <>
-                              {item?.isChange === false}
-                            </> 
-                          ))}
+                          disabled={articles.map(item => item?.isChange == false                       
+                          )}
 
                           className='disabled:cursor-not-allowed text-sm bg-[#23BE0A] p-2 text-white rounded-md'>Details</button>
                       </Link>
