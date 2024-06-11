@@ -23,7 +23,7 @@ const CheckoutForm = ({price}) => {
 
     // const searchParams = new URLSearchParams(location.search);
     // const price = parseFloat(searchParams.get('price')) || 0;
-    console.log(price)
+    // console.log(price)
 
     useEffect(() => {
         axiosSecure.post('/create-payment-intent' , {price})
@@ -69,7 +69,7 @@ const CheckoutForm = ({price}) => {
         if (confirmError) {
             setError(confirmError.message);
         } else {
-            setLoading(true);
+             setLoading(true);
             if (paymentIntent.status === 'succeeded') {
                 setTransactionId(paymentIntent.id);
               

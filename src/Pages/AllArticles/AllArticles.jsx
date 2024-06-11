@@ -31,8 +31,9 @@ const AllArticles = () => {
     },
   })
  
+  const hasSubscription = articles.some(sub => sub?.isChange);
 
-console.log(articles)
+console.log(hasSubscription)
 useEffect(() => {
 
   axiosPublic.get(`/allArticles`)
@@ -41,8 +42,11 @@ useEffect(() => {
       setAllArticles(res.data)
     })
 
+    }, [axiosPublic])
+  const filteredArticles = allArticles.filter(article => article.status === 'Approved');
 
-}, [axiosPublic])
+// console.log(allArticles)
+
 
 const handleViewCount = (articleId) => {
 
@@ -77,7 +81,7 @@ const handleSearch = e => {
   e.preventDefault()
   setSearch(searchText)
 }
-const filteredArticles = allArticles.filter(article => article.status === 'Approved');
+
 // console.log(search)
 
 return (
@@ -155,7 +159,7 @@ return (
 
             <div className='' key={item?._id}>
               <div className={`max-w-2xl overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800 ${item?.isPremium === 'Yes' &&
-                'bg-amber-100'}`}>
+                'bg-amber-500'}`}>
 
                 <div className='relative'>
                   <img className="object-cover w-full h-64" src={item?.image} alt="Product" />
@@ -190,10 +194,10 @@ return (
                           {moment(item?.deadline).format('MMMM Do YYYY, h:mm:ss a')}
                         </p>
                       </div>
+                      
                       <Link to={`/articleDetails/${item?._id}`}>
                         <button onClick={() => handleViewCount(item?._id)}
-                          disabled={articles.map(item => item?.isChange == false                       
-                          )}
+                          disabled={item?.isPremium === "Yes" &&  !hasSubscription}
 
                           className='disabled:cursor-not-allowed text-sm bg-[#23BE0A] p-2 text-white rounded-md'>Details</button>
                       </Link>
