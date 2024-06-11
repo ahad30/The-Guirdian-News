@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import {GithubAuthProvider, GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword,signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import app from '../firebase/firebase.config';
 import useAxiosPublic from "../hooks/useAxiosPublic";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
@@ -11,6 +12,7 @@ const githubProvider = new GithubAuthProvider();
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const axiosPublic = useAxiosPublic();
+    const axiosSecure = useAxiosSecure();
     const [loading, setLoading] = useState(true);
 
     const createUser = (email, password) => {
@@ -45,6 +47,20 @@ const AuthProvider = ({ children }) => {
         });
     }
 
+    const checkSubscriptionStatus = async () => {
+        try {
+            const response = await axiosSecure.get('/check-subscription-status');
+            const userWithUpdatedSubscription = response.data;
+            // console.log(userWithUpdatedSubscription)
+            setUser(userWithUpdatedSubscription);
+        } catch (error) {
+            console.error('Error checking subscription status:', error);
+        }
+    };
+
+
+
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser);
@@ -58,6 +74,7 @@ const AuthProvider = ({ children }) => {
                             // console.log(res?.data?.token)
                             localStorage.setItem('access-token', res?.data?.token);
                             setLoading(false);
+                            checkSubscriptionStatus();
                         }
                     })
             }

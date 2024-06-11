@@ -5,12 +5,15 @@ import './CheckoutForm.css'
 import useAuth from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Spin } from "antd";
+import { Helmet } from "react-helmet-async";
 
-const CheckoutForm = () => {
+const CheckoutForm = ({price}) => {
     const [error, setError] = useState('');
     const [clientSecret, setClientSecret] = useState('');
+    const [loading, setLoading] = useState(false);
     const [transactionId, setTransactionId] = useState('');
-    const [subscriptionPeriod, setSubscriptionPeriod] = useState('1 minute');
+    const [subscriptionPeriod, setSubscriptionPeriod] = useState('3 minute');
     const stripe = useStripe();
     const elements = useElements();
     const axiosSecure = useAxiosSecure();
@@ -18,20 +21,21 @@ const CheckoutForm = () => {
     const navigate = useNavigate();
     const location = useLocation()
 
-    const searchParams = new URLSearchParams(location.search);
-    const price = parseFloat(searchParams.get('price')) || 0;
+    // const searchParams = new URLSearchParams(location.search);
+    // const price = parseFloat(searchParams.get('price')) || 0;
     console.log(price)
 
     useEffect(() => {
-        axiosSecure.post('/create-payment-intent', { price }) // Replace 20 with the actual price based on subscriptionPeriod
+        axiosSecure.post('/create-payment-intent' , {price})
             .then(res => {
                 setClientSecret(res.data.clientSecret);
             });
     }, [axiosSecure, subscriptionPeriod]);
 
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+     
         if (!stripe || !elements) {
             return;
         }
@@ -65,11 +69,13 @@ const CheckoutForm = () => {
         if (confirmError) {
             setError(confirmError.message);
         } else {
+            setLoading(true);
             if (paymentIntent.status === 'succeeded') {
                 setTransactionId(paymentIntent.id);
+              
                 const payment = {
                     email: user.email,
-                    price: 20, // Replace 20 with the actual price based on subscriptionPeriod
+                    price: price,
                     transactionId: paymentIntent.id,
                     date: new Date(),
                     subscriptionPeriod: subscriptionPeriod
@@ -82,8 +88,9 @@ const CheckoutForm = () => {
                         icon: "success",
                         title: "Subscription successful",
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 3000
                     });
+                    setLoading(false)
                     navigate('/')
                 }
             }
@@ -92,11 +99,16 @@ const CheckoutForm = () => {
 
     return (
         <>
-        <div className="">
-        {  price === 20 && <p className="font-bold text-center">Starter Plan Price: ${price}</p>
-        }
-        {  price === 30 && <p className="font-bold text-center">Pro Plan Price: ${price}</p>
-        }
+           <Helmet>
+        <title>Guirdian | Payment</title>
+      </Helmet>
+        {
+            loading ? <><div className="flex justify-center">
+                <Spin></Spin>
+            </div></>
+         : (
+            <div className="">
+        
         <form onSubmit={handleSubmit}>
             <CardElement
                 options={{
@@ -117,7 +129,7 @@ const CheckoutForm = () => {
             <div>
                 <p className="font-bold mb-2">Select Period</p>
                 <select className="border p-2 rounded-lg w-full" value={subscriptionPeriod} onChange={(e) => setSubscriptionPeriod(e.target.value)}>
-                    <option value="1 minute">1 minute</option>
+                    <option value="3 minute">3 minute</option>
                     <option value="5 days">5 days</option>
                     <option value="10 days">10 days</option>
                 </select>
@@ -132,6 +144,9 @@ const CheckoutForm = () => {
     
         </form>
         </div>
+         )
+        
+        }
         </>
     );
 

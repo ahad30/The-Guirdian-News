@@ -1,8 +1,8 @@
-import Payment from "./Payment/Payment"
+import Pricing from "../Home/Pricing/Pricing"
 
 const Subscription = () => {
   return (
-    <div><Payment></Payment></div>
+    <div><Pricing></Pricing></div>
   )
 }
 

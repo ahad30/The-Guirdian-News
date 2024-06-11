@@ -6,7 +6,7 @@ const Pricing = () => {
   return (
     <>
     <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-5 text-center">
-     Choose a Plan for more features</h2>
+     Subscription Plans</h2>
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
 
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:items-center md:gap-8">
@@ -118,7 +118,7 @@ const Pricing = () => {
           </li>
         </ul>
   
-     <Link to={`/subscription?price=30`}>
+     <Link to={`/subscription/pro`}>
      <div
           className="mt-8 block rounded-full border border-indigo-600 bg-indigo-600 px-12 py-3 text-center text-sm font-medium text-white hover:bg-indigo-700 hover:ring-1 hover:ring-indigo-700 focus:outline-none focus:ring active:text-indigo-500"
         >
@@ -203,7 +203,7 @@ const Pricing = () => {
           </li>
         </ul>
   
-        <Link to={`/subscription?price=20`}>
+        <Link to={`/subscription/basic`}>
      <div
           className="mt-8 block rounded-full border border-indigo-600 bg-indigo-600 px-12 py-3 text-center text-sm font-medium text-white hover:bg-indigo-700 hover:ring-1 hover:ring-indigo-700 focus:outline-none focus:ring active:text-indigo-500"
         >

@@ -19,6 +19,7 @@ import AllArticles from "../Pages/AllArticles/AllArticles";
 import AllArticlesDetails from "../Pages/AllArticles/AllArticlesDetails";
 import Subscription from "../Pages/Subscription/Subscription";
 import PremiumArticle from "../Pages/PremiumArticle/PremiumArticle";
+import Payment from "../Pages/Subscription/Payment/Payment";
 
 
 
@@ -55,11 +56,17 @@ export const routes = createBrowserRouter([
         loader: ({ params }) =>
          fetch(`${import.meta.env.VITE_API_URL}/articleDetails/${params.id}`)
       },
- 
+
       {
         path: "/subscription",
-        element:  <PrivateRoute><Subscription/></PrivateRoute>,
+        element:  <PrivateRoute><Subscription></Subscription></PrivateRoute>,
       },
+ 
+      {
+        path: "/subscription/:payment",
+        element:  <PrivateRoute><Payment></Payment></PrivateRoute>,
+      },
+   
 
       {
         path: "/premiumArticle",

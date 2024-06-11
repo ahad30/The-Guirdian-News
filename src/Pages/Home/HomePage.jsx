@@ -8,9 +8,11 @@ import Statistics from "./Statistics/Statistics";
 import Pricing from "./Pricing/Pricing";
 import { useEffect, useState } from "react";
 import SubscriptionModal from "./SubscriptionModal ";
+import useAuth from "../../hooks/useAuth";
 
 const HomePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const {loading} = useAuth();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -23,6 +25,12 @@ const HomePage = () => {
   const closeModal = () => setIsModalOpen(false);
   
   return (
+<>
+    { loading ? <div className="flex justify-center items-center flex-col h-full p-48">
+      <Spinner className="h-16 w-16 text-gray-900/50" />
+        </div>
+        
+        :
     <div className="max-w-7xl mx-auto">
      <Helmet>
       <title>Guirdian | Home </title>
@@ -41,6 +49,9 @@ const HomePage = () => {
      <Blog></Blog>
      <Contact></Contact>
     </div>
+
+    }
+  </>
   );
 };
 

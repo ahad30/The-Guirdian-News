@@ -1,19 +1,18 @@
 import { Helmet } from "react-helmet-async";
 import toast  from 'react-hot-toast';
 import { updateProfile } from 'firebase/auth';
-import { useContext, useState } from "react";
-import { AuthContext } from "../../Providers/AuthProvider";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Card, Spinner } from "@material-tailwind/react";
+import useAuth from "../../hooks/useAuth";
 
 
 const UpdateProfile = () => {
 const [loading, setLoading] = useState(false);
- const {user} = useContext(AuthContext);
+ const {user} = useAuth();
  const location = useLocation();
  const navigate = useNavigate();
-
-
+// console.log(user)
 
  const handleUpdate = (e) => {
     e.preventDefault();
@@ -22,10 +21,10 @@ const [loading, setLoading] = useState(false);
     const photo = form.get('photo');
     const email = form.get('email');
 
-    if (name === user.displayName && photo === user.photoURL ) {
-        toast.error('No changes detected in profile fields')
-        return;
-    }
+    // if (name === user.displayName && photo === user.photoURL ) {
+    //     toast.error('No changes detected in profile fields')
+    //     return;
+    // }
     setLoading(true);
     updateProfile(user, {
         displayName: name,

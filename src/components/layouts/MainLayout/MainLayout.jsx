@@ -4,9 +4,13 @@ import Footer from "../../common/Footer/Footer";
 import { useContext } from "react";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import { Spinner } from "@material-tailwind/react";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import { useQuery } from "@tanstack/react-query";
+import useAuth from "../../../hooks/useAuth";
 
 const MainLayout = () => {
   const {loading} = useContext(AuthContext);
+
   return (
 
 

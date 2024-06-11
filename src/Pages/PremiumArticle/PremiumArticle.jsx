@@ -19,7 +19,7 @@ const PremiumArticle = () => {
      
   }, [ axiosPublic])
   const filteredArticles = allArticles.filter(article => article.isPremium === 'Yes');
-  console.log(filteredArticles)
+  // console.log(filteredArticles)
   return (
     <div className='max-w-6xl mx-auto'>   
      <h1 className='text-center font-bold text-xl mb-3'>All Premium Articles</h1>
