@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { Button } from '@material-tailwind/react';
 import { MdDelete } from 'react-icons/md';
@@ -9,19 +9,59 @@ import toast from 'react-hot-toast';
 import { Spin } from 'antd';
 import ReasonRejectModal from '../../../components/ReasonRejectModal/ReasonRejectModal';
 import Swal from 'sweetalert2';
+import './Article.css'
 
 const AllArticle = () => {
   const axiosSecure = useAxiosSecure();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [count, setCount] = useState(0)
+
+  const numberOfPages = Math.ceil(count / itemsPerPage);
+  const pages = [...Array(numberOfPages).keys()];
+console.log(pages)
 
   const { data: articles = [], refetch, isLoading } = useQuery({
-    queryKey: ['articles'],
+    queryKey: ['articles', currentPage , itemsPerPage ],
     queryFn: async () => {
-      const res = await axiosSecure.get('/allArticle');
+      const res = await axiosSecure.get(`/allAdminArticle?page=${currentPage}&size=${itemsPerPage}`);
       return res.data;
     }
   });
+  //  console.log(articles)
+
+  useEffect( () =>{
+    axiosSecure.get(`/articlesPaginationCount`)
+    .then(data => 
+    {
+      // console.log(data.data)
+      setCount(data?.data?.count)
+    })
+}, [])
+
+   
+const handleItemsPerPage = e => {
+  const val = parseInt(e.target.value);
+  console.log(val);
+  setItemsPerPage(val);
+  setCurrentPage(0);
+}
+
+const handlePrevPage = () => {
+  if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+  }
+}
+
+const handleNextPage = () => {
+  if (currentPage < pages.length - 1) {
+      setCurrentPage(currentPage + 1);
+  }
+}
+
+  
 
   const truncateTitle = (title) => {
     const words = title.split(' ');
@@ -251,6 +291,34 @@ const AllArticle = () => {
           </div>
         </div>
       </div>
+
+      <div className='pagination mt-5'>
+                {/* <p>Current page: {currentPage}</p> */}
+                <button className='bg-green-400 px-2 text-white rounded-lg disabled:cursor-not-allowed' onClick={handlePrevPage} disabled={currentPage === 0}>Prev</button>
+                {
+                    pages.map(page => 
+                    
+                       (
+                   
+                        <button
+                        className={currentPage === page ? 'bg-blue-600 px-2 text-white rounded-lg me-2' : undefined}
+                        onClick={() => setCurrentPage(page)}
+                        key={page}
+                    >{page}</button>
+                    
+                       )
+                    )
+                }
+                <button className='bg-green-400 px-2 text-white rounded-lg disabled:cursor-not-allowed' onClick={handleNextPage} disabled={currentPage === pages.length - 1}>Next</button>
+
+                <select className='bg-orange-500 rounded-lg text-white' value={itemsPerPage} onChange={handleItemsPerPage} name="" id="">
+
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
       {selectedItem && (
         <ReasonRejectModal
           isOpen={isOpen}

@@ -4,12 +4,57 @@ import { FaTrashAlt, FaUsers } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { Button } from "antd";
 import CountUp from 'react-countup';
-import useUser from "../../../hooks/useUser";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { useEffect, useState } from "react";
 
 const AllUsers = () => {
     const axiosSecure = useAxiosSecure();
-    const [users, refetch] = useUser();
+    const [currentPage, setCurrentPage] = useState(0);
+    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [count, setCount] = useState(0)
+
+    const numberOfPages = Math.ceil(count / itemsPerPage);
+    const pages = [...Array(numberOfPages).keys()];
+
+
+    const { data: users = [], refetch } = useQuery({
+        queryKey: ['adminUsers' , currentPage , itemsPerPage],
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/adminUsers?page=${currentPage}&size=${itemsPerPage}`);
+            return res.data;
+        }
+    })
+
+    useEffect( () =>{
+        axiosSecure.get(`/userPaginationCount`)
+        .then(data => 
+        {
+          // console.log(data.data)
+          setCount(data?.data?.count)
+        })
+    }, [])
+
+
+    const handleItemsPerPage = e => {
+        const val = parseInt(e.target.value);
+        console.log(val);
+        setItemsPerPage(val);
+        setCurrentPage(0);
+      }
+      
+      const handlePrevPage = () => {
+        if (currentPage > 0) {
+            setCurrentPage(currentPage - 1);
+        }
+      }
+      
+      const handleNextPage = () => {
+        if (currentPage < pages.length - 1) {
+            setCurrentPage(currentPage + 1);
+        }
+      }
+
+
 
     const handleMakeAdmin = user => {
         axiosSecure.patch(`/users/admin/${user._id}`)
@@ -101,6 +146,33 @@ const AllUsers = () => {
                     </tbody>
                 </table>
            </div>
+            </div>
+            <div className='pagination mt-5'>
+                {/* <p>Current page: {currentPage}</p> */}
+                <button className='bg-green-400 px-2 text-white rounded-lg disabled:cursor-not-allowed' onClick={handlePrevPage} disabled={currentPage === 0}>Prev</button>
+                {
+                    pages.map(page => 
+                    
+                       (
+                   
+                        <button
+                        className={currentPage === page ? 'bg-blue-600 px-2 text-white rounded-lg me-2' : undefined}
+                        onClick={() => setCurrentPage(page)}
+                        key={page}
+                    >{page}</button>
+                    
+                       )
+                    )
+                }
+                <button className='bg-green-400 px-2 text-white rounded-lg disabled:cursor-not-allowed' onClick={handleNextPage} disabled={currentPage === pages.length - 1}>Next</button>
+
+                <select className='bg-orange-500 rounded-lg text-white' value={itemsPerPage} onChange={handleItemsPerPage} name="" id="">
+
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                </select>
             </div>
         </div>
     );

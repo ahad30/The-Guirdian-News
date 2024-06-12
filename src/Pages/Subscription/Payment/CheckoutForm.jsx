@@ -13,7 +13,7 @@ const CheckoutForm = ({price}) => {
     const [clientSecret, setClientSecret] = useState('');
     const [loading, setLoading] = useState(false);
     const [transactionId, setTransactionId] = useState('');
-    const [subscriptionPeriod, setSubscriptionPeriod] = useState('3 minute');
+    const [subscriptionPeriod, setSubscriptionPeriod] = useState('2 minute');
     const stripe = useStripe();
     const elements = useElements();
     const axiosSecure = useAxiosSecure();
@@ -129,7 +129,7 @@ const CheckoutForm = ({price}) => {
             <div>
                 <p className="font-bold mb-2">Select Period</p>
                 <select className="border p-2 rounded-lg w-full" value={subscriptionPeriod} onChange={(e) => setSubscriptionPeriod(e.target.value)}>
-                    <option value="3 minute">3 minute</option>
+                    <option value="2 minute">2 minute</option>
                     <option value="5 days">5 days</option>
                     <option value="10 days">10 days</option>
                 </select>

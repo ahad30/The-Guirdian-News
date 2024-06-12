@@ -7,8 +7,9 @@ import RecentPublisher from "./RecentPublisher/RecentPublisher";
 import Statistics from "./Statistics/Statistics";
 import Pricing from "./Pricing/Pricing";
 import { useEffect, useState } from "react";
-import SubscriptionModal from "./SubscriptionModal ";
+
 import useAuth from "../../hooks/useAuth";
+import SubscriptionModal from "./SubscriptionModal";
 
 const HomePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,7 +43,7 @@ const HomePage = () => {
      <Slider></Slider>
     </div>
      <Banner></Banner>
-     <SubscriptionModal isOpen={isModalOpen} closeModal={closeModal} />
+     <SubscriptionModal  isOpen={isModalOpen} closeModal={closeModal} />
     <RecentPublisher></RecentPublisher>
     <Statistics></Statistics>
     <Pricing></Pricing>

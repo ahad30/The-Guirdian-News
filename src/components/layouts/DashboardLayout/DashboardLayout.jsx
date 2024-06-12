@@ -23,7 +23,7 @@ const DashboardLayout = () => {
 
     <>
     <div className="flex">
-    <div>
+    <div className="">
    { 
   isAdmin && 
   <>
@@ -86,7 +86,7 @@ const DashboardLayout = () => {
 }
     </div>
 
-    <div className="w-[90%] mx-auto overflow-hidden">
+    <div className="w-[90%] mx-auto h-screen overflow-x-hidden">
       <Outlet />
     </div>
     </div>

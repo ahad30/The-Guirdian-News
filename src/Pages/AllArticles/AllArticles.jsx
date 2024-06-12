@@ -33,7 +33,8 @@ const AllArticles = () => {
  
   const hasSubscription = articles.some(sub => sub?.isChange);
 
-console.log(hasSubscription)
+// console.log(hasSubscription)
+
 useEffect(() => {
 
   axiosPublic.get(`/allArticles`)
@@ -45,7 +46,7 @@ useEffect(() => {
     }, [axiosPublic])
   const filteredArticles = allArticles.filter(article => article.status === 'Approved');
 
-// console.log(allArticles)
+console.log(allArticles)
 
 
 const handleViewCount = (articleId) => {

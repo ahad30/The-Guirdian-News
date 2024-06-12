@@ -49,10 +49,12 @@ const AuthProvider = ({ children }) => {
 
     const checkSubscriptionStatus = async () => {
         try {
+            // setLoading(true)
             const response = await axiosSecure.get('/check-subscription-status');
             const userWithUpdatedSubscription = response.data;
             // console.log(userWithUpdatedSubscription)
             setUser(userWithUpdatedSubscription);
+          
         } catch (error) {
             console.error('Error checking subscription status:', error);
         }
@@ -73,8 +75,8 @@ const AuthProvider = ({ children }) => {
                         if (res?.data?.token) {
                             // console.log(res?.data?.token)
                             localStorage.setItem('access-token', res?.data?.token);
-                            setLoading(false);
                             checkSubscriptionStatus();
+                            setLoading(false);
                         }
                     })
             }
