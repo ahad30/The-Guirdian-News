@@ -14,7 +14,7 @@ Features:
 
 
 1. **Comprehensive Coverage**:
-   - Your website offers extensive coverage on various topics, including politics, culture, sports, and more, ensuring readers are well-informed on a wide range of issues.
+   - The website offers extensive coverage on various topics, including politics, culture, sports, and more, ensuring readers are well-informed on a wide range of issues.
 
 2. **Timely Updates**:
    - The site provides real-time news updates, keeping readers informed of the latest developments as they happen, making it a reliable source for breaking news.
