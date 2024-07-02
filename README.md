@@ -2,6 +2,12 @@ Website Name : The Guirdian News
 Admin email : user1@gmail.com
 Password : 123456Aa
 live link : https://the-guirdian-news.netlify.app/
+
+🛠️ **Technical Stack:**
+- **Frontend:** React, Firebase, React Router
+- **Backend:** Node.js, Express, MongoDB
+- **Payment Gatway:** Stripe
+- **Additional Libraries:** Tanstack query for data fetching, react-select for multi-select dropdowns, imgbb/cloudinary for image uploads, react-google-charts for dynamic charts, and more.
                   
 Packages:
 
